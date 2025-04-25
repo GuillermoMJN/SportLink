@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1058462137190",
+    "project_id": "sportlink-2db8a",
+    "storage_bucket": "sportlink-2db8a.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058462137190:android:0c7adf54a573821dcde6a7",
+        "android_client_info": {
+          "package_name": "com.uax.androidmaster"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAidyalZzH7_Nbikt498QE5tN40YuNqxxk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
