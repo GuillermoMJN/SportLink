@@ -2,6 +2,7 @@ package com.uax.androidmaster.primeraapp.ui.perfil
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -29,9 +30,7 @@ fun Imagen(modifier: Modifier = Modifier) {
         modifier = modifier
             .fillMaxSize()
             .background(
-                Brush.verticalGradient(
-                    listOf(White, Blue100), startY = 0f, endY = 2000f
-                )
+                White
             ),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -39,22 +38,16 @@ fun Imagen(modifier: Modifier = Modifier) {
             painter = painterResource(id = R.drawable.sportlink),
             contentDescription = ""
         )
+        IconButton(onClick = {
+            liked = !liked
+        }) {
+            Icon(
+                painter = painterResource(
+                    id = if (liked) R.drawable.like_blue else R.drawable.like_white
+                ),
+                contentDescription = if (liked) "Quitar like" else "Dar like"
+            )
 
-        Row(
-            modifier = Modifier
-                .fillMaxSize(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            IconButton(onClick = {
-                liked = !liked
-            }) {
-                Icon(
-                    painter = painterResource(
-                        id = if (liked) R.drawable.like_blue else R.drawable.like_white
-                    ),
-                    contentDescription = if (liked) "Quitar like" else "Dar like"
-                )
-            }
         }
     }
 }
