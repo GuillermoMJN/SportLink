@@ -25,5 +25,5 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginScreen(auth: FirebaseAuth) {
-    CustomToolBar()
+
 }

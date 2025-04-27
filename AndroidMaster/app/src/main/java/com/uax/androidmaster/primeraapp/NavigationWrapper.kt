@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.perfil.PantallaPerfil
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
+import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
 fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) {
@@ -21,7 +22,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         composable("login") {
             PantallaPerfil(
                 navigateToLogin = { navHostController.navigate("login") },
-                navigateToSignUp = { navHostController.navigate("register") })
+                navigateToSignUp = { navHostController.navigate("register") },
+                navHostController)
         }
         composable("register") {
             RegisterScreen(auth)

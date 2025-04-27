@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.navigation.NavHostController
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
@@ -18,9 +19,10 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 @Composable
 fun PantallaPerfil(
     navigateToLogin: () -> Unit = {},
-    navigateToSignUp: () -> Unit = {}
+    navigateToSignUp: () -> Unit = {},
+    navHostController: NavHostController
 ) {
-    Scaffold(topBar = { CustomToolBar() }) { innerPadding ->
+    Scaffold(topBar = { CustomToolBar(navHostController) }) { innerPadding ->
         ContentPantallaPerfil(
             navigateToLogin = navigateToLogin,
             navigateToSignUp = navigateToSignUp,
