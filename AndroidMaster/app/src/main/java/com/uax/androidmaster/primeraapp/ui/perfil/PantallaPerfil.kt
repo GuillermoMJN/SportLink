@@ -2,11 +2,14 @@ package com.uax.androidmaster.primeraapp.ui.perfil
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,17 +38,16 @@ fun PantallaPerfil(
 fun ContentPantallaPerfil(
     navigateToLogin: () -> Unit = {},
     navigateToSignUp: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(White),
-        horizontalAlignment = Alignment.CenterHorizontally
+        verticalArrangement = Arrangement.Top
     ) {
-        Spacer(modifier = Modifier.weight(1f))
-        Imagen(modifier)
-        Spacer(modifier = Modifier.weight(1f))
+        Imagen()
+        Imagen()
     }
 }
 
