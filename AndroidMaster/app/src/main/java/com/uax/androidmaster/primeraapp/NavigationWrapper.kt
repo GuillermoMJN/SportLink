@@ -21,12 +21,11 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
         }
         composable("login") {
             PantallaPerfil(
-                navigateToLogin = { navHostController.navigate("login") },
-                navigateToSignUp = { navHostController.navigate("register") },
-                navHostController)
+                navHostController
+            )
         }
         composable("register") {
-            RegisterScreen(auth)
+            RegisterScreen(auth, navHostController)
         }
     }
 }

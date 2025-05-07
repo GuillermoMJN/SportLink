@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uax.androidmaster.R
+import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
 import com.uax.androidmaster.primeraapp.ui.theme.*
 
 @Preview
@@ -94,24 +95,4 @@ fun BotonPrincipal(onClick: () -> Unit, texto: String) {
     ) {
         Text(texto, fontSize = 20.sp, color = Blue100)
     }
-}
-
-@Composable
-fun IngresarTexto(texto: String, padding: Int) {
-    TextField(
-        value = "",
-        onValueChange = { },
-        label = { Text(texto.toString()) },
-        colors = TextFieldDefaults.colors(
-            White,
-            focusedLabelColor = Blue100,
-            focusedIndicatorColor = Transparent,
-            unfocusedIndicatorColor = Transparent
-        ),
-        shape = RoundedCornerShape(16.dp),// Bordes redondeados
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(padding.dp)
-            .padding(horizontal = 20.dp)
-    )
 }

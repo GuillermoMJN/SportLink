@@ -21,14 +21,10 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
 fun PantallaPerfil(
-    navigateToLogin: () -> Unit = {},
-    navigateToSignUp: () -> Unit = {},
     navHostController: NavHostController
 ) {
     Scaffold(topBar = { CustomToolBar(navHostController) }) { innerPadding ->
         ContentPantallaPerfil(
-            navigateToLogin = navigateToLogin,
-            navigateToSignUp = navigateToSignUp,
             modifier = Modifier.padding(innerPadding)
         )
     }
@@ -36,8 +32,6 @@ fun PantallaPerfil(
 
 @Composable
 fun ContentPantallaPerfil(
-    navigateToLogin: () -> Unit = {},
-    navigateToSignUp: () -> Unit = {},
     modifier: Modifier
 ) {
     Column(
