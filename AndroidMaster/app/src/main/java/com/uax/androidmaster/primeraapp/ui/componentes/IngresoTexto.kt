@@ -8,13 +8,15 @@ import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @Composable
-fun IngresarTexto(texto: String, padding: Int) {
+fun IngresarTexto(texto: String, padding: Int, tipo: String? = null) {
     TextField(
         value = "",
         onValueChange = { },
@@ -25,6 +27,10 @@ fun IngresarTexto(texto: String, padding: Int) {
             focusedIndicatorColor = Transparent,
             unfocusedIndicatorColor = Transparent
         ),
+        visualTransformation = when(tipo){
+            "pass" -> PasswordVisualTransformation()
+            else-> VisualTransformation.None
+        },
         shape = RoundedCornerShape(16.dp),// Bordes redondeados
         modifier = Modifier
             .fillMaxWidth()

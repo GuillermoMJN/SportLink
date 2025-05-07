@@ -39,6 +39,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.uax.androidmaster.R
+import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
 import com.uax.androidmaster.primeraapp.ui.theme.*
 
@@ -86,13 +87,3 @@ fun ContentInitialScreen(navigateToLogin: () -> Unit = {}, navigateToSignUp: () 
     }
 }
 
-@Composable
-fun BotonPrincipal(onClick: () -> Unit, texto: String) {
-    Button(
-        onClick = onClick,
-        modifier = Modifier.padding(horizontal = 10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = White)
-    ) {
-        Text(texto, fontSize = 20.sp, color = Blue100)
-    }
-}
