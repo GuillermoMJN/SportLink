@@ -56,7 +56,7 @@ fun RegisterContent(modifier: Modifier) {
         IngresarTexto("Nombre", 10)
         IngresarTexto("Apellido", 10)
         IngresarTexto("Fecha de nacimiento", 10)
-        IngresarTexto("Contraseña", 10)
+        IngresarTexto("Contraseña", 10, "pass")
         IngresarTexto("Correo electrónico", 10)
         Spacer(modifier = Modifier.weight(1f))
     }
