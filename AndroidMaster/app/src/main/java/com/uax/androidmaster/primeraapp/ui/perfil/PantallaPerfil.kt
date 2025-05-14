@@ -44,6 +44,8 @@ fun ContentPantallaPerfil(
             .background(White),
         verticalArrangement = Arrangement.Top
     ) {
-
+        items(total){index ->
+            Imagen()
+        }
     }
 }

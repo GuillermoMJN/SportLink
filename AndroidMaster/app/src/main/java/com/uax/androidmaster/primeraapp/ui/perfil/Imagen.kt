@@ -43,7 +43,7 @@ fun Imagen() {
             .background(
                 White
             )
-            .verticalScroll(rememberScrollState()),
+            ,
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top
     ) {
         Box(
