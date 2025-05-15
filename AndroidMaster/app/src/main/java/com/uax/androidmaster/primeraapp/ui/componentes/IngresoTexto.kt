@@ -17,6 +17,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
@@ -27,7 +28,7 @@ fun IngresarTexto(texto: String, padding: Int, tipo: String? = null) {
     TextField(
         value = valor,
         onValueChange = { valor = it },
-        label = { Text(texto.toString()) },
+        label = { Text(texto.toString(), color = Black) },
         colors = TextFieldDefaults.colors(
             White,
             focusedLabelColor = Blue100,

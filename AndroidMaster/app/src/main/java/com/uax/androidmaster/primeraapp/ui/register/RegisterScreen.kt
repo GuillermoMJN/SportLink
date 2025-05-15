@@ -20,7 +20,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
+import com.uax.androidmaster.primeraapp.ui.componentes.IngresoFecha
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.Transparent
@@ -55,7 +57,7 @@ fun RegisterContent(modifier: Modifier) {
         )
         IngresarTexto("Nombre", 10)
         IngresarTexto("Apellido", 10)
-        IngresarTexto("Fecha de nacimiento", 10)
+        IngresoFecha("Fecha Nacimineto", 30, 10)
         IngresarTexto("Contraseña", 10, "pass")
         IngresarTexto("Correo electrónico", 10)
         Spacer(modifier = Modifier.weight(1f))
