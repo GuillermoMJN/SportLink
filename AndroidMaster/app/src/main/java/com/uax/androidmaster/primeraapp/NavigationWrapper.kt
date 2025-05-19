@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
+import com.uax.androidmaster.primeraapp.ui.mensajes.PantallaMensajes
+import com.uax.androidmaster.primeraapp.ui.notificaciones.PantallaNotificaciones
 import com.uax.androidmaster.primeraapp.ui.perfil.PantallaPerfil
 
 @Composable
@@ -23,21 +25,25 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
             PantallaPrincipal(
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
-                navigateToMensajes = { navHostController.navigate("mensajes")},
-                navigateToNotificaciones = { navHostController.navigate("notificaciones")}
+                navigateToMensajes = { navHostController.navigate("mensajes") },
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") }
             )
         }
         composable("register") {
             RegisterScreen(auth, navHostController)
         }
-        composable("perfil"){
-            PantallaPerfil(navHostController)
+        composable("perfil") {
+            PantallaPerfil(
+                navHostController,
+                navigateToMensajes = { navHostController.navigate("mensajes") },
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") }
+            )
         }
-        composable("mensajes"){
-            PantallaPerfil(navHostController)
+        composable("mensajes") {
+            PantallaMensajes(navHostController)
         }
-        composable("notificaciones"){
-            PantallaPerfil(navHostController)
+        composable("notificaciones") {
+            PantallaNotificaciones(navHostController)
         }
     }
 }

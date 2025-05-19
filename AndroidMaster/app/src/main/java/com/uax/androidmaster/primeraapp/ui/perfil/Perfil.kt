@@ -14,9 +14,18 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
 fun PantallaPerfil(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    navigateToMensajes: () -> Unit,
+    navigateToNotificaciones: () -> Unit
 ) {
-    Scaffold(topBar = { CustomToolBar(navHostController) }) { innerPadding ->
+    Scaffold(topBar = {
+        CustomToolBar(
+            navHostController,
+            navigateToMensajes = navigateToMensajes,
+            navigateToNotificaciones
+                     = navigateToNotificaciones
+        )
+    }) { innerPadding ->
         ContentPantallaPerfil(
             modifier = Modifier.padding(innerPadding)
         )
@@ -24,6 +33,9 @@ fun PantallaPerfil(
 }
 
 @Composable
-fun ContentPantallaPerfil(modifier: Modifier){
-    Column (modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.Start){ Text("Probando") }
+fun ContentPantallaPerfil(modifier: Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.Start
+    ) { Text("Perfil") }
 }
