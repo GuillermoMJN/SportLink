@@ -16,14 +16,16 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 fun PantallaPerfil(
     navHostController: NavHostController,
     navigateToMensajes: () -> Unit,
-    navigateToNotificaciones: () -> Unit
+    navigateToNotificaciones: () -> Unit,
+    navigateToPrincipal: () -> Unit
 ) {
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
             navigateToMensajes = navigateToMensajes,
             navigateToNotificaciones
-                     = navigateToNotificaciones
+                     = navigateToNotificaciones,
+            navigateToPrincipal = navigateToPrincipal
         )
     }) { innerPadding ->
         ContentPantallaPerfil(

@@ -14,13 +14,17 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
 fun PantallaNotificaciones(
-    navHostController: NavHostController, navigateToMensajes: () -> Unit,
-    navigateToPerfil: () -> Unit
+    navHostController: NavHostController,
+    navigateToMensajes: () -> Unit,
+    navigateToPerfil: () -> Unit,
+    navigateToPrincipal: () -> Unit
 ) {
     Scaffold(topBar = {
         CustomToolBar(
-            navHostController, navigateToMensajes = navigateToMensajes,
-            navigateToPerfil = navigateToPerfil
+            navHostController,
+            navigateToMensajes = navigateToMensajes,
+            navigateToPerfil = navigateToPerfil,
+            navigateToPrincipal = navigateToPrincipal
         )
     }) { innerPadding ->
         ContentPantallaNotificaciones(

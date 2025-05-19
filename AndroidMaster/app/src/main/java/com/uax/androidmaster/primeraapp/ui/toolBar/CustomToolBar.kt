@@ -16,20 +16,44 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.navigation.NavController
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.Blue60
 import com.uax.androidmaster.primeraapp.ui.theme.White
+import androidx.compose.runtime.getValue
+import java.security.Principal
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomToolBar(navhHostController: NavHostController, navigateToPerfil: () -> Unit = {},navigateToMensajes: () -> Unit = {},navigateToNotificaciones: () -> Unit = {}) {
+fun CustomToolBar(
+    navhHostController: NavHostController,
+    navigateToPerfil: () -> Unit = {},
+    navigateToMensajes: () -> Unit = {},
+    navigateToNotificaciones: () -> Unit = {}, navigateToPrincipal: () -> Unit = {}
+) {
+    val navBackStackEntry by navhHostController.currentBackStackEntryAsState()
+    val currentRoute = navBackStackEntry?.destination?.route
     TopAppBar(
-        title = { Text(text = "SportLink") },
+        title = {
+            when (currentRoute) {
+                "perfil" -> Text("Perfil")
+                "notificaciones" -> Text("Notificaciones")
+                "mensajes" -> Text("Mensajes")
+                else -> Text("SportLink")
+            }
+        },
         colors = topAppBarColors(containerColor = Blue60),
         navigationIcon = {
-            IconButton(onClick = { navhHostController.popBackStack() }) {
+            IconButton(onClick = {
+                when (currentRoute) {
+                    "perfil" -> navigateToPrincipal()
+                    "notificaciones" -> navigateToPrincipal()
+                    "mensajes" -> navigateToPrincipal()
+                    else -> navhHostController.popBackStack()
+                }
+            }) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_back),
                     contentDescription = "Atras"

@@ -36,21 +36,25 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
             PantallaPerfil(
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
-                navigateToNotificaciones = { navHostController.navigate("notificaciones") }
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") },
+                navigateToPrincipal = { navHostController.navigate("login")}
             )
         }
         composable("mensajes") {
             PantallaMensajes(
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
-                navigateToNotificaciones = { navHostController.navigate("notificaciones")}
+                navigateToNotificaciones = { navHostController.navigate("notificaciones")},
+                navigateToPrincipal = { navHostController.navigate("login")}
             )
         }
         composable("notificaciones") {
             PantallaNotificaciones(
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
-                navigateToPerfil = { navHostController.navigate("perfil") })
+                navigateToPerfil = { navHostController.navigate("perfil") },
+                navigateToPrincipal = { navHostController.navigate("login")}
+            )
         }
     }
 }

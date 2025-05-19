@@ -11,18 +11,21 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.primeraapp.ui.principal.ContentPantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
+import java.security.Principal
 
 @Composable
 fun PantallaMensajes(
     navHostController: NavHostController,
     navigateToPerfil: () -> Unit,
-    navigateToNotificaciones: () -> Unit
+    navigateToNotificaciones: () -> Unit,
+    navigateToPrincipal: () -> Unit
 ) {
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
             navigateToPerfil = navigateToPerfil,
-            navigateToNotificaciones = navigateToNotificaciones
+            navigateToNotificaciones = navigateToNotificaciones,
+            navigateToPrincipal = navigateToPrincipal
         )
     }) { innerPadding ->
         ContentPantallaMensajes(
