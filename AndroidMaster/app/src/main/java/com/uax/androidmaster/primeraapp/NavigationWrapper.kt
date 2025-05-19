@@ -40,10 +40,17 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
             )
         }
         composable("mensajes") {
-            PantallaMensajes(navHostController)
+            PantallaMensajes(
+                navHostController,
+                navigateToPerfil = { navHostController.navigate("perfil") },
+                navigateToNotificaciones = { navHostController.navigate("notificaciones")}
+            )
         }
         composable("notificaciones") {
-            PantallaNotificaciones(navHostController)
+            PantallaNotificaciones(
+                navHostController,
+                navigateToMensajes = { navHostController.navigate("mensajes") },
+                navigateToPerfil = { navHostController.navigate("perfil") })
         }
     }
 }

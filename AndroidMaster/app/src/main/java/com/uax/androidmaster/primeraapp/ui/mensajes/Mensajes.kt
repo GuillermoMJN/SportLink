@@ -14,9 +14,17 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
 fun PantallaMensajes(
-    navHostController: NavHostController
+    navHostController: NavHostController,
+    navigateToPerfil: () -> Unit,
+    navigateToNotificaciones: () -> Unit
 ) {
-    Scaffold(topBar = { CustomToolBar(navHostController) }) { innerPadding ->
+    Scaffold(topBar = {
+        CustomToolBar(
+            navHostController,
+            navigateToPerfil = navigateToPerfil,
+            navigateToNotificaciones = navigateToNotificaciones
+        )
+    }) { innerPadding ->
         ContentPantallaMensajes(
             modifier = Modifier.padding(innerPadding)
         )
@@ -24,6 +32,9 @@ fun PantallaMensajes(
 }
 
 @Composable
-fun ContentPantallaMensajes(modifier: Modifier){
-    Column (modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.Start){ Text("Mensajes") }
+fun ContentPantallaMensajes(modifier: Modifier) {
+    Column(
+        modifier = modifier.fillMaxSize(),
+        horizontalAlignment = Alignment.Start
+    ) { Text("Mensajes") }
 }
