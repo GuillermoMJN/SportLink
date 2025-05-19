@@ -24,7 +24,7 @@ import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CustomToolBar(navhHostController: NavHostController) {
+fun CustomToolBar(navhHostController: NavHostController, navigateToPerfil: () -> Unit = {},navigateToMensajes: () -> Unit = {},navigateToNotificaciones: () -> Unit = {}) {
     TopAppBar(
         title = { Text(text = "SportLink") },
         colors = topAppBarColors(containerColor = Blue60),
@@ -33,6 +33,32 @@ fun CustomToolBar(navhHostController: NavHostController) {
                 Icon(
                     painter = painterResource(id = R.drawable.arrow_back),
                     contentDescription = "Atras"
+                )
+            }
+        },
+        actions = {
+            IconButton(onClick = {
+                navigateToNotificaciones()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.notificaciones),
+                    contentDescription = "Notificaciones"
+                )
+            }
+            IconButton(onClick = {
+                navigateToPerfil()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.perfil),
+                    contentDescription = "Perfil"
+                )
+            }
+            IconButton(onClick = {
+                navigateToMensajes()
+            }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.mensajes),
+                    contentDescription = "Mensajes"
                 )
             }
         })

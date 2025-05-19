@@ -39,6 +39,7 @@ fun RegisterScreen(auth: FirebaseAuth, navHostController: NavHostController) {
 
 @Composable
 fun RegisterContent(modifier: Modifier) {
+    val nombre:String
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -61,5 +62,6 @@ fun RegisterContent(modifier: Modifier) {
         IngresarTexto("Contraseña", 10, "pass")
         IngresarTexto("Correo electrónico", 10)
         Spacer(modifier = Modifier.weight(1f))
+
     }
 }
