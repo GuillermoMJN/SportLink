@@ -9,7 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
-import com.uax.androidmaster.primeraapp.ui.principal.ContentPantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
@@ -17,14 +16,16 @@ fun PantallaNotificaciones(
     navHostController: NavHostController,
     navigateToMensajes: () -> Unit,
     navigateToPerfil: () -> Unit,
-    navigateToPrincipal: () -> Unit
+    navigateToPrincipal: () -> Unit,
+    navigateToBuscar: () -> Unit
 ) {
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
-            navigateToMensajes = navigateToMensajes,
             navigateToPerfil = navigateToPerfil,
-            navigateToPrincipal = navigateToPrincipal
+            navigateToMensajes = navigateToMensajes,
+            navigateToPrincipal = navigateToPrincipal,
+            navigateToBuscar = navigateToBuscar
         )
     }) { innerPadding ->
         ContentPantallaNotificaciones(

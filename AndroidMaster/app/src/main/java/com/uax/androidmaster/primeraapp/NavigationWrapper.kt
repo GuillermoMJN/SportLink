@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
+import com.uax.androidmaster.primeraapp.ui.buscar.PantallaBuscar
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
@@ -26,7 +27,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToMensajes = { navHostController.navigate("mensajes") },
-                navigateToNotificaciones = { navHostController.navigate("notificaciones") }
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") },
+                navigateToBuscar = {navHostController.navigate("buscar")}
             )
         }
         composable("register") {
@@ -37,7 +39,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
-                navigateToPrincipal = { navHostController.navigate("login")}
+                navigateToPrincipal = { navHostController.navigate("login")},
+                navigateToBuscar = {navHostController.navigate("buscar")}
             )
         }
         composable("mensajes") {
@@ -45,7 +48,8 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones")},
-                navigateToPrincipal = { navHostController.navigate("login")}
+                navigateToPrincipal = { navHostController.navigate("login")},
+                navigateToBuscar = {navHostController.navigate("buscar")}
             )
         }
         composable("notificaciones") {
@@ -53,7 +57,17 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToPerfil = { navHostController.navigate("perfil") },
-                navigateToPrincipal = { navHostController.navigate("login")}
+                navigateToPrincipal = { navHostController.navigate("login")},
+                navigateToBuscar = {navHostController.navigate("buscar")}
+            )
+        }
+        composable("buscar") {
+            PantallaBuscar(
+                navHostController,
+                navigateToPerfil = {navHostController.navigate("perfil")},
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") },
+                navigateToPrincipal = { navHostController.navigate("login")},
+                navigateToMensajes = { navHostController.navigate("mensajes") }
             )
         }
     }

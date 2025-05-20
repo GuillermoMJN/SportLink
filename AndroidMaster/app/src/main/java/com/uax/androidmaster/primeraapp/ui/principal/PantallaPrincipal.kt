@@ -18,9 +18,19 @@ fun PantallaPrincipal(
     navHostController: NavHostController,
     navigateToPerfil: () -> Unit,
     navigateToMensajes: () -> Unit,
-    navigateToNotificaciones: () -> Unit
+    navigateToNotificaciones: () -> Unit,
+    navigateToBuscar: () -> Unit
 ) {
-    Scaffold(topBar = { CustomToolBar(navHostController, navigateToPerfil, navigateToMensajes, navigateToNotificaciones) }) { innerPadding ->
+    Scaffold(topBar = {
+        CustomToolBar(
+            navHostController,
+            navigateToPerfil,
+            navigateToMensajes,
+            navigateToNotificaciones,
+            navigateToBuscar,
+            navigateToBuscar
+        )
+    }) { innerPadding ->
         ContentPantallaPrincipal(
             modifier = Modifier.padding(innerPadding)
         )
@@ -39,7 +49,7 @@ fun ContentPantallaPrincipal(
             .background(White),
         verticalArrangement = Arrangement.Top
     ) {
-        items(total){index ->
+        items(total) { index ->
             Imagen()
         }
     }
