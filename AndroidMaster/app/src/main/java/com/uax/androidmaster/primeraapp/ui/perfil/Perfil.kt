@@ -85,18 +85,20 @@ fun ContentPantallaPerfil(modifier: Modifier) {
             R.drawable.sportlink,
             R.drawable.sportlink,
             R.drawable.sportlink,
-            R.drawable.sportlink
+            R.drawable.like_blue
         )
     }
-    Column(modifier = modifier.fillMaxSize().padding(1.dp)) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically // para que queden alineados
+    Column(modifier = modifier
+        .fillMaxSize()
+        .padding(1.dp)) {
+        Row(modifier = Modifier.padding(10.dp),
+            verticalAlignment = Alignment.CenterVertically// para que queden alineados
         ) {
             Image(
                 painter = painterResource(id = R.drawable.sportlink),
                 contentDescription = "fotoPerfil",
                 modifier = Modifier
-                    .height(60.dp) // altura fija más controlada
+                    .height(100.dp) // altura fija más controlada
                     .clip(RoundedCornerShape(8.dp)) // opcional: darle forma
             )
 
@@ -113,9 +115,9 @@ fun ContentPantallaPerfil(modifier: Modifier) {
         }
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
-            modifier = modifier
+            modifier = Modifier
                 .fillMaxSize()
-                .padding(8.dp),
+                .padding(6.dp),
             contentPadding = PaddingValues(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
