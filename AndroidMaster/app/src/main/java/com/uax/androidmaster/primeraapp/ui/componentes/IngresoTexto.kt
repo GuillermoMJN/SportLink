@@ -8,6 +8,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,11 +24,17 @@ import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @Composable
-fun IngresarTexto(texto: String, padding: Int, tipo: String? = null) {
-    var valor by remember { mutableStateOf("") }
+fun IngresarTexto(
+    texto: String,
+    padding: Int,
+    tipo: String? = null,
+    contenido: MutableState<String?>? = null
+) {
+
+    val state = contenido ?: remember { mutableStateOf<String?>(null) }
     TextField(
-        value = valor,
-        onValueChange = { valor = it },
+        value = state.value ?: "",
+        onValueChange = { state.value = it },
         label = { Text(texto.toString(), color = Black) },
         colors = TextFieldDefaults.colors(
             White,
@@ -35,11 +42,11 @@ fun IngresarTexto(texto: String, padding: Int, tipo: String? = null) {
             focusedIndicatorColor = Transparent,
             unfocusedIndicatorColor = Transparent
         ),
-        visualTransformation = when(tipo){
+        visualTransformation = when (tipo) {
             "pass" -> PasswordVisualTransformation()
-            else-> VisualTransformation.None
+            else -> VisualTransformation.None
         },
-        keyboardOptions = when(tipo){
+        keyboardOptions = when (tipo) {
             "email" -> KeyboardOptions(keyboardType = KeyboardType.Email)
             "pass" -> KeyboardOptions(keyboardType = KeyboardType.Password)
             "fecha" -> KeyboardOptions(keyboardType = KeyboardType.Number)
