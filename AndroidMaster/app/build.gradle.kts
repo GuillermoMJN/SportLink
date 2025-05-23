@@ -63,4 +63,5 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.crashlytics)
     implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
 }
