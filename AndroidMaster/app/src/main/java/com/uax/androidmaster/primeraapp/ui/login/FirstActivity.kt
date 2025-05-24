@@ -52,5 +52,4 @@ class FirstActivity : AppCompatActivity() {
 
         }
     }
-
 }
