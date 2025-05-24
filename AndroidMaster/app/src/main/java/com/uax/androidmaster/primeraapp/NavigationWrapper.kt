@@ -5,6 +5,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.buscar.PantallaBuscar
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
@@ -14,13 +15,13 @@ import com.uax.androidmaster.primeraapp.ui.notificaciones.PantallaNotificaciones
 import com.uax.androidmaster.primeraapp.ui.perfil.PantallaPerfil
 
 @Composable
-fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) {
+fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth, db: FirebaseFirestore) {
     NavHost(navController = navHostController, startDestination = "initial") {
         composable("initial") {
             InitialScreen(
                 auth = auth,
                 navigateToLogin = { navHostController.navigate("login") },
-                navigateToSignUp = { navHostController.navigate("register") }
+                navigateToSignUp = { navHostController.navigate("register") },
             )
         }
         composable("login") {
@@ -33,7 +34,7 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth) 
             )
         }
         composable("register") {
-            RegisterScreen(auth, navHostController)
+            RegisterScreen(auth, db)
         }
         composable("perfil") {
             PantallaPerfil(

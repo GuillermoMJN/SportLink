@@ -23,25 +23,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresoFecha
+import com.uax.androidmaster.primeraapp.ui.register.crearUsuario
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
+import java.util.Date
 
 @Composable
-fun RegisterScreen(auth: FirebaseAuth, navHostController: NavHostController) {
+fun RegisterScreen(auth: FirebaseAuth, db: FirebaseFirestore) {
     Scaffold { innerPadding ->
         RegisterContent(
-            modifier = Modifier.padding(innerPadding), auth = auth
+            modifier = Modifier.padding(innerPadding),
+            auth = auth,
+            db = db
         )
     }
 }
 
 @Composable
-fun RegisterContent(modifier: Modifier, auth: FirebaseAuth) {
+fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestore) {
     val usuario = remember { mutableStateOf<String?>(null) }
     val pass = remember { mutableStateOf<String?>(null) }
     val apellido = remember { mutableStateOf<String?>(null) }
@@ -66,17 +71,24 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth) {
         )
         IngresarTexto("Nombre", 10, contenido = usuario)
         IngresarTexto("Apellido", 10, contenido = apellido)
-        IngresoFecha("Fecha Nacimineto", 30, 10)
+        IngresoFecha("Fecha Nacimineto", 30, 10, contenido = fecha)
         IngresarTexto("Contraseña", 10, "pass", contenido = pass)
         IngresarTexto("Correo electrónico", 10, contenido = correo)
         Spacer(modifier = Modifier.weight(1f))
-
 
         BotonPrincipal(onClick = {
             auth.createUserWithEmailAndPassword(correo.value ?: "", pass.value ?: "")
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
                         Log.i("Registrado", "SI")
+                        crearUsuario(
+                            db = db,
+                            nombre = usuario,
+                            apellido = apellido,
+                            nacimiento = fecha,
+                            pass = pass,
+                            correo = correo
+                        )
                     } else {
                         Log.i("No registrado", "NO")
                     }

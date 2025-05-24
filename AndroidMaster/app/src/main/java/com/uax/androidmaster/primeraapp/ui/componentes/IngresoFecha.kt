@@ -19,7 +19,7 @@ import com.uax.androidmaster.primeraapp.ui.theme.White
 import java.util.*
 
 @Composable
-fun IngresoFecha(texto: String, paddingH: Int, paddingV: Int) {
+fun IngresoFecha(texto: String, paddingH: Int, paddingV: Int, contenido: MutableState<String?>? = null) {
     val context = LocalContext.current
     val calendar = Calendar.getInstance()
 
@@ -29,7 +29,9 @@ fun IngresoFecha(texto: String, paddingH: Int, paddingV: Int) {
     val datePickerDialog = DatePickerDialog(
         context,
         { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-            selectedDate = "%02d/%02d/%04d".format(dayOfMonth, month + 1, year)
+            // Formato compatible con "yyyy-MM-dd"
+            selectedDate = "%04d-%02d-%02d".format(year, month + 1, dayOfMonth)
+            contenido?.value = selectedDate // Actualiza el estado externo también
         },
         calendar.get(Calendar.YEAR),
         calendar.get(Calendar.MONTH),
