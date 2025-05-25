@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.ui.Alignment
 
@@ -61,6 +62,7 @@ fun PantallaPerfil(
 
 @Composable
 fun ContentPantallaPerfil(modifier: Modifier, navController: NavHostController) {
+    val texto = remember { mutableStateOf("") }
     val fotos = remember {
         mutableStateListOf(
             R.drawable.sportlink,
@@ -91,7 +93,7 @@ fun ContentPantallaPerfil(modifier: Modifier, navController: NavHostController) 
             Spacer(modifier = Modifier.width(8.dp)) // pequeño espacio opcional
             Column(horizontalAlignment = Alignment.Start) {
                 Text(
-                    text = "Aquí iría el perfil",
+                    text = texto.value,
                 )
             }
             Column(
