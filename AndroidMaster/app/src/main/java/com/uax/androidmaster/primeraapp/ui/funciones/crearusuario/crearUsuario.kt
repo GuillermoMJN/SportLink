@@ -1,6 +1,7 @@
-package com.uax.androidmaster.primeraapp.ui.register
+package com.uax.androidmaster.primeraapp.ui.funciones.crearusuario
 
 import androidx.compose.runtime.MutableState
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
 import com.uax.androidmaster.primeraapp.ui.model.Usuario
@@ -15,29 +16,29 @@ fun crearUsuario(
     nacimiento: MutableState<String?>? = null,
     pass: MutableState<String?>? = null,
     correo: MutableState<String?>? = null,
+    onSuccess: () -> Unit = {},
+    onError: (Exception) -> Unit = {}
 ) {
+    val uid = FirebaseAuth.getInstance().currentUser?.uid ?: return
 
     val formato = SimpleDateFormat("yyyy-MM-dd", Locale.getDefault())
     val fechaNacimiento = try {
-        formato.parse(nacimiento?.value ?: "") ?: Date() // valor por defecto
+        formato.parse(nacimiento?.value ?: "") ?: Date()
     } catch (e: Exception) {
-        Date() // si falla el parseo
+        Date()
     }
 
-    // Validaciones básicas opcionales
-    val nombre = nombre?.value ?: ""
-    val apellido = apellido?.value ?: ""
-    val nacimiento = nacimiento?.value ?: ""
-    val contrasena = pass?.value ?: ""
-    val correo = correo?.value ?: ""
-
-    val usuario: Usuario = Usuario(
-        nombre = nombre,
-        apellido = apellido,
+    val usuario = Usuario(
+        nombre = nombre?.value ?: "",
+        apellido = apellido?.value ?: "",
         nacimiento = fechaNacimiento,
-        contrasena = contrasena,
-        correo = correo
+        contrasena = pass?.value ?: "",
+        correo = correo?.value ?: ""
     )
 
-    db.collection(ConstantesFirestore.BBDD_USUARIOS).add(usuario)
+    db.collection(ConstantesFirestore.BBDD_USUARIOS)
+        .document(uid) // ← usamos UID como ID del documento
+        .set(usuario)
+        .addOnSuccessListener { onSuccess() }
+        .addOnFailureListener { onError(it) }
 }

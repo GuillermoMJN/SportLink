@@ -5,13 +5,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,20 +15,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresoFecha
-import com.uax.androidmaster.primeraapp.ui.register.crearUsuario
+import com.uax.androidmaster.primeraapp.ui.funciones.crearperfil.crearPerfil
+import com.uax.androidmaster.primeraapp.ui.funciones.crearusuario.crearUsuario
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
-import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
-import java.util.Date
 
 @Composable
 fun RegisterScreen(auth: FirebaseAuth, db: FirebaseFirestore) {
@@ -88,6 +81,11 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestor
                             nacimiento = fecha,
                             pass = pass,
                             correo = correo
+                        )
+                        crearPerfil(
+                            db = db,
+                            "Esta es una prueba",
+                            ""
                         )
                     } else {
                         Log.i("No registrado", "NO")

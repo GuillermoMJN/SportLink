@@ -28,7 +28,7 @@ class FirstActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = Firebase.auth
-        db = Firebase.firestore
+        db = FirebaseFirestore.getInstance()
         supportActionBar?.hide()
 
         setContent {

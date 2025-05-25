@@ -30,12 +30,16 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.layout.ContentScale
+import com.google.firebase.Firebase
+import com.google.firebase.firestore.firestore
+import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.cargarDescripcionPerfil
 
 @Composable
 fun PantallaPerfil(
@@ -70,6 +74,7 @@ fun ContentPantallaPerfil(
     navController: NavHostController,
     texto: MutableState<String>
 ) {
+    val db = Firebase.firestore
     val fotos = remember {
         mutableStateListOf(
             R.drawable.sportlink,
@@ -79,6 +84,11 @@ fun ContentPantallaPerfil(
             R.drawable.sportlink,
             R.drawable.like_blue
         )
+    }
+    LaunchedEffect(true) {
+        cargarDescripcionPerfil(db) {
+            texto.value = it ?: ""
+        }
     }
     Column(
         modifier = modifier

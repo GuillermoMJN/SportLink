@@ -25,10 +25,7 @@ import androidx.compose.ui.unit.sp
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
-import com.uax.androidmaster.primeraapp.ui.register.crearUsuario
 import com.uax.androidmaster.primeraapp.ui.theme.*
-import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
 
 @Composable
 fun InitialScreen(
