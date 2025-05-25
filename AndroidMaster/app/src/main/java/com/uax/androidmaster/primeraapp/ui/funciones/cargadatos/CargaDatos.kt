@@ -1,5 +1,6 @@
 package com.uax.androidmaster.primeraapp.ui.funciones.cargadatos
 
+import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -11,6 +12,7 @@ import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.firestore
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
+import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
 
 class CargaDatos : ViewModel() {
 
@@ -66,10 +68,23 @@ class CargaDatos : ViewModel() {
 
     fun actualizarDescripcion(nuevaDescripcion: String) {
         uid?.let { userId ->
-            db.collection("usuarios").document(userId)
-                .update("descripcion", nuevaDescripcion)
-                .addOnSuccessListener {
-                    _descripcion.value = nuevaDescripcion
+            db.collection("perfiles")
+                .whereEqualTo("usuarioId", userId)
+                .get()
+                .addOnSuccessListener { documents ->
+                    for (document in documents) {
+                        db.collection("perfiles").document(document.id)
+                            .update("descripcion", nuevaDescripcion)
+                            .addOnSuccessListener {
+                                _descripcion.value = nuevaDescripcion
+                            }
+                            .addOnFailureListener {
+                                Log.e("Firestore", "Error al actualizar descripción", it)
+                            }
+                    }
+                }
+                .addOnFailureListener {
+                    Log.e("Firestore", "Error al buscar perfil", it)
                 }
         }
     }
