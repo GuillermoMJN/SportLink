@@ -28,6 +28,10 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccountCircle
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 
 import androidx.compose.ui.Alignment
 
@@ -51,13 +55,13 @@ fun PantallaPerfil(
         )
     }) { innerPadding ->
         ContentPantallaPerfil(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding), navController = navHostController
         )
     }
 }
 
 @Composable
-fun ContentPantallaPerfil(modifier: Modifier) {
+fun ContentPantallaPerfil(modifier: Modifier,navController: NavHostController) {
     val fotos = remember {
         mutableStateListOf(
             R.drawable.sportlink,
@@ -68,10 +72,13 @@ fun ContentPantallaPerfil(modifier: Modifier) {
             R.drawable.like_blue
         )
     }
-    Column(modifier = modifier
-        .fillMaxSize()
-        .padding(1.dp)) {
-        Row(modifier = Modifier.padding(10.dp),
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(1.dp)
+    ) {
+        Row(
+            modifier = Modifier.padding(10.dp),
             verticalAlignment = Alignment.CenterVertically// para que queden alineados
         ) {
             Image(
@@ -90,28 +97,34 @@ fun ContentPantallaPerfil(modifier: Modifier) {
                 Text(
                     text = "Aquí iría el perfil",
                 )
-            }
 
-        }
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(3),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(6.dp),
-            contentPadding = PaddingValues(4.dp),
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-            horizontalArrangement = Arrangement.spacedBy(4.dp)
-        ) {
-            items(fotos) { fotoId ->
-                Image(
-                    painter = painterResource(id = fotoId),
-                    contentDescription = "Foto publicada",
-                    modifier = Modifier
-                        .aspectRatio(1f) // Para mantener imágenes cuadradas
-                        .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
+            }
+            IconButton(onClick = { navController.navigate("notificaciones") }) {
+                Icon(
+                    painter = painterResource(id = R.drawable.ajustes),
+                    contentDescription = "Ir al perfil",
                 )
             }
         }
+        LazyVerticalGrid(
+                columns = GridCells.Fixed(3),
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(6.dp),
+        contentPadding = PaddingValues(4.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+        horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+        items(fotos) { fotoId ->
+            Image(
+                painter = painterResource(id = fotoId),
+                contentDescription = "Foto publicada",
+                modifier = Modifier
+                    .aspectRatio(1f) // Para mantener imágenes cuadradas
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop
+            )
+        }
+    }
     }
 }
