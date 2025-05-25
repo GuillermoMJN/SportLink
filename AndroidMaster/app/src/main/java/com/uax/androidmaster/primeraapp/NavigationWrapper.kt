@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uax.androidmaster.primeraapp.ui.ajustes.PantallaAjsutes
 import com.uax.androidmaster.primeraapp.ui.buscar.PantallaBuscar
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
@@ -15,7 +16,11 @@ import com.uax.androidmaster.primeraapp.ui.notificaciones.PantallaNotificaciones
 import com.uax.androidmaster.primeraapp.ui.perfil.PantallaPerfil
 
 @Composable
-fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth, db: FirebaseFirestore) {
+fun NavigationWrapper(
+    navHostController: NavHostController,
+    auth: FirebaseAuth,
+    db: FirebaseFirestore
+) {
     NavHost(navController = navHostController, startDestination = "initial") {
         composable("initial") {
             InitialScreen(
@@ -30,7 +35,7 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth, 
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
-                navigateToBuscar = {navHostController.navigate("buscar")}
+                navigateToBuscar = { navHostController.navigate("buscar") }
             )
         }
         composable("register") {
@@ -41,17 +46,18 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth, 
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
-                navigateToPrincipal = { navHostController.navigate("login")},
-                navigateToBuscar = {navHostController.navigate("buscar")}
+                navigateToPrincipal = { navHostController.navigate("login") },
+                navigateToBuscar = { navHostController.navigate("buscar") },
+                navigateToAjustes = { navHostController.navigate("ajustes") }
             )
         }
         composable("mensajes") {
             PantallaMensajes(
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
-                navigateToNotificaciones = { navHostController.navigate("notificaciones")},
-                navigateToPrincipal = { navHostController.navigate("login")},
-                navigateToBuscar = {navHostController.navigate("buscar")}
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") },
+                navigateToPrincipal = { navHostController.navigate("login") },
+                navigateToBuscar = { navHostController.navigate("buscar") }
             )
         }
         composable("notificaciones") {
@@ -59,18 +65,21 @@ fun NavigationWrapper(navHostController: NavHostController, auth: FirebaseAuth, 
                 navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToPerfil = { navHostController.navigate("perfil") },
-                navigateToPrincipal = { navHostController.navigate("login")},
-                navigateToBuscar = {navHostController.navigate("buscar")}
+                navigateToPrincipal = { navHostController.navigate("login") },
+                navigateToBuscar = { navHostController.navigate("buscar") }
             )
         }
         composable("buscar") {
             PantallaBuscar(
                 navHostController,
-                navigateToPerfil = {navHostController.navigate("perfil")},
+                navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
-                navigateToPrincipal = { navHostController.navigate("login")},
+                navigateToPrincipal = { navHostController.navigate("login") },
                 navigateToMensajes = { navHostController.navigate("mensajes") }
             )
+        }
+        composable("ajustes") {
+            PantallaAjsutes(navHostController)
         }
     }
 }

@@ -32,7 +32,7 @@ fun PantallaBuscar(
             navigateToPerfil = navigateToPerfil,
             navigateToMensajes = navigateToMensajes,
             navigateToNotificaciones = navigateToNotificaciones,
-            navigateToPrincipal = navigateToPrincipal
+            navigateToPrincipal = navigateToPrincipal,
         )
     }) { innerPadding ->
         ContentPantallaBuscar(

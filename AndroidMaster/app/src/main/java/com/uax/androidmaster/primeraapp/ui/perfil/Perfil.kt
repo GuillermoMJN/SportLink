@@ -28,8 +28,6 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 
@@ -43,7 +41,8 @@ fun PantallaPerfil(
     navigateToMensajes: () -> Unit,
     navigateToNotificaciones: () -> Unit,
     navigateToPrincipal: () -> Unit,
-    navigateToBuscar: () -> Unit
+    navigateToBuscar: () -> Unit,
+    navigateToAjustes: () -> Unit
 ) {
     Scaffold(topBar = {
         CustomToolBar(
@@ -51,7 +50,7 @@ fun PantallaPerfil(
             navigateToMensajes = navigateToMensajes,
             navigateToNotificaciones = navigateToNotificaciones,
             navigateToPrincipal = navigateToPrincipal,
-            navigateToBuscar = navigateToBuscar
+            navigateToBuscar = navigateToBuscar,
         )
     }) { innerPadding ->
         ContentPantallaPerfil(
@@ -61,7 +60,7 @@ fun PantallaPerfil(
 }
 
 @Composable
-fun ContentPantallaPerfil(modifier: Modifier,navController: NavHostController) {
+fun ContentPantallaPerfil(modifier: Modifier, navController: NavHostController) {
     val fotos = remember {
         mutableStateListOf(
             R.drawable.sportlink,
@@ -79,7 +78,7 @@ fun ContentPantallaPerfil(modifier: Modifier,navController: NavHostController) {
     ) {
         Row(
             modifier = Modifier.padding(10.dp),
-            verticalAlignment = Alignment.CenterVertically// para que queden alineados
+            verticalAlignment = Alignment.Top// para que queden alineados
         ) {
             Image(
                 painter = painterResource(id = R.drawable.sportlink),
@@ -94,37 +93,39 @@ fun ContentPantallaPerfil(modifier: Modifier,navController: NavHostController) {
                 Text(
                     text = "Aquí iría el perfil",
                 )
-                Text(
-                    text = "Aquí iría el perfil",
-                )
-
             }
-            IconButton(onClick = { navController.navigate("notificaciones") }) {
-                Icon(
-                    painter = painterResource(id = R.drawable.ajustes),
-                    contentDescription = "Ir al perfil",
-                )
+            Column(
+                modifier = Modifier,
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.End
+            ) {
+                IconButton(onClick = { navController.navigate("ajustes") }) {
+                    Icon(
+                        painter = painterResource(id = R.drawable.ajustes),
+                        contentDescription = "Ir al perfil",
+                    )
+                }
             }
         }
         LazyVerticalGrid(
-                columns = GridCells.Fixed(3),
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(6.dp),
-        contentPadding = PaddingValues(4.dp),
-        verticalArrangement = Arrangement.spacedBy(4.dp),
-        horizontalArrangement = Arrangement.spacedBy(4.dp)
+            columns = GridCells.Fixed(3),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(6.dp),
+            contentPadding = PaddingValues(4.dp),
+            verticalArrangement = Arrangement.spacedBy(4.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-        items(fotos) { fotoId ->
-            Image(
-                painter = painterResource(id = fotoId),
-                contentDescription = "Foto publicada",
-                modifier = Modifier
-                    .aspectRatio(1f) // Para mantener imágenes cuadradas
-                    .clip(RoundedCornerShape(8.dp)),
-                contentScale = ContentScale.Crop
-            )
+            items(fotos) { fotoId ->
+                Image(
+                    painter = painterResource(id = fotoId),
+                    contentDescription = "Foto publicada",
+                    modifier = Modifier
+                        .aspectRatio(1f) // Para mantener imágenes cuadradas
+                        .clip(RoundedCornerShape(8.dp)),
+                    contentScale = ContentScale.Crop
+                )
+            }
         }
-    }
     }
 }

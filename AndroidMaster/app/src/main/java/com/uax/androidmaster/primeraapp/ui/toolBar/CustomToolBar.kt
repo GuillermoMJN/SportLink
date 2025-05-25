@@ -22,7 +22,7 @@ fun CustomToolBar(
     navigateToMensajes: () -> Unit = {},
     navigateToNotificaciones: () -> Unit = {},
     navigateToPrincipal: () -> Unit = {},
-    navigateToBuscar: () -> Unit = {}
+    navigateToBuscar: () -> Unit = {},
 ) {
     val navBackStackEntry by navhHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
