@@ -30,6 +30,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.ui.Alignment
@@ -43,7 +44,8 @@ fun PantallaPerfil(
     navigateToNotificaciones: () -> Unit,
     navigateToPrincipal: () -> Unit,
     navigateToBuscar: () -> Unit,
-    navigateToAjustes: () -> Unit
+    navigateToAjustes: () -> Unit,
+    texto: MutableState<String>
 ) {
     Scaffold(topBar = {
         CustomToolBar(
@@ -55,14 +57,19 @@ fun PantallaPerfil(
         )
     }) { innerPadding ->
         ContentPantallaPerfil(
-            modifier = Modifier.padding(innerPadding), navController = navHostController
+            modifier = Modifier.padding(innerPadding),
+            navController = navHostController,
+            texto = texto
         )
     }
 }
 
 @Composable
-fun ContentPantallaPerfil(modifier: Modifier, navController: NavHostController) {
-    val texto = remember { mutableStateOf("") }
+fun ContentPantallaPerfil(
+    modifier: Modifier,
+    navController: NavHostController,
+    texto: MutableState<String>
+) {
     val fotos = remember {
         mutableStateListOf(
             R.drawable.sportlink,
@@ -92,9 +99,10 @@ fun ContentPantallaPerfil(modifier: Modifier, navController: NavHostController) 
 
             Spacer(modifier = Modifier.width(8.dp)) // pequeño espacio opcional
             Column(horizontalAlignment = Alignment.Start) {
+                //Descripcion
                 Text(
                     text = texto.value,
-                )
+                    )
             }
             Column(
                 modifier = Modifier,

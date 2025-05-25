@@ -24,7 +24,7 @@ import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @Composable
-fun IngresarTexto(
+fun CambioDeContenido(
     texto: String,
     padding: Int,
     tipo: String? = null,

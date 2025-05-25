@@ -1,6 +1,8 @@
 package com.uax.androidmaster.primeraapp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -21,6 +23,8 @@ fun NavigationWrapper(
     auth: FirebaseAuth,
     db: FirebaseFirestore
 ) {
+
+    val textoDescripcion = remember { mutableStateOf("Descripción inicial") }
     NavHost(navController = navHostController, startDestination = "initial") {
         composable("initial") {
             InitialScreen(
@@ -48,7 +52,8 @@ fun NavigationWrapper(
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
                 navigateToPrincipal = { navHostController.navigate("login") },
                 navigateToBuscar = { navHostController.navigate("buscar") },
-                navigateToAjustes = { navHostController.navigate("ajustes") }
+                navigateToAjustes = { navHostController.navigate("ajustes") },
+                texto = textoDescripcion
             )
         }
         composable("mensajes") {
@@ -79,7 +84,7 @@ fun NavigationWrapper(
             )
         }
         composable("ajustes") {
-            PantallaAjsutes(navHostController)
+            PantallaAjsutes(navHostController, texto = textoDescripcion)
         }
     }
 }
