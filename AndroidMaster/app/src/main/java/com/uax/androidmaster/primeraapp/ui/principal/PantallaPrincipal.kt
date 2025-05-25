@@ -7,9 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.primeraapp.ui.componentes.Imagen
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
@@ -19,8 +22,13 @@ fun PantallaPrincipal(
     navigateToPerfil: () -> Unit,
     navigateToMensajes: () -> Unit,
     navigateToNotificaciones: () -> Unit,
-    navigateToBuscar: () -> Unit
+    navigateToBuscar: () -> Unit,
+    cargaDatosUsuario: CargaDatos
 ) {
+    LaunchedEffect(Unit) {
+        cargaDatosUsuario.cargarUID()
+    }
+
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
@@ -32,24 +40,25 @@ fun PantallaPrincipal(
         )
     }) { innerPadding ->
         ContentPantallaPrincipal(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            viewModel = cargaDatosUsuario // PASAMOS EL ViewModel
         )
     }
 }
 
 @Composable
 fun ContentPantallaPrincipal(
-    modifier: Modifier
+    modifier: Modifier,
+    viewModel: CargaDatos
 ) {
-    val total: Int = 3
-    var i: Int = 0
+    // Puedes acceder a viewModel.descripcion.collectAsState() si lo necesitas aquí
     LazyColumn(
         modifier = modifier
             .fillMaxSize()
             .background(White),
         verticalArrangement = Arrangement.Top
     ) {
-        items(total) { index ->
+        items(3) {
             Imagen()
         }
     }

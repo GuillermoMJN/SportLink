@@ -3,6 +3,7 @@ package com.uax.androidmaster.primeraapp
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -10,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.ajustes.PantallaAjsutes
 import com.uax.androidmaster.primeraapp.ui.buscar.PantallaBuscar
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
@@ -33,9 +35,14 @@ fun NavigationWrapper(
                 navigateToSignUp = { navHostController.navigate("register") },
             )
         }
-        composable("login") {
+        composable("login") { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry("login")
+            }
+            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
             PantallaPrincipal(
                 navHostController,
+                cargaDatosUsuario = cargaDatosUsuario,
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
@@ -83,8 +90,16 @@ fun NavigationWrapper(
                 navigateToMensajes = { navHostController.navigate("mensajes") }
             )
         }
-        composable("ajustes") {
-            PantallaAjsutes(navHostController, texto = textoDescripcion)
+        composable("ajustes") { backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry("login")
+            }
+            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
+            PantallaAjsutes(
+                navHostController,
+                texto = textoDescripcion,
+                cargaDatosUsuario = cargaDatosUsuario
+            )
         }
     }
 }
