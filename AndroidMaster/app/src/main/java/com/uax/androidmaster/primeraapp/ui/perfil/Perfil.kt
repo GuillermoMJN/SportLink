@@ -88,6 +88,7 @@ fun PantallaPerfil(
         )
     }
 }
+
 @Composable
 fun ContentPantallaPerfil(
     modifier: Modifier,
@@ -100,6 +101,10 @@ fun ContentPantallaPerfil(
 
     val imagenPerfilUrl = rememberSaveable { mutableStateOf<String?>(null) }
     val fotosUrls = remember { mutableStateListOf<String>() }
+
+    LaunchedEffect(cargaDatosUsuario.descripcion.value) {
+        texto.value = cargaDatosUsuario.descripcion.value
+    }
 
     fun cargarFotosPublicaciones(uid: String, fotosList: SnapshotStateList<String>) {
         val publicacionesRef = FirebaseStorage.getInstance()

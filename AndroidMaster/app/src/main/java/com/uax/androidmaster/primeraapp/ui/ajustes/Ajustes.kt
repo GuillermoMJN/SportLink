@@ -72,6 +72,7 @@ fun PantallaAjsutes(
         )
     }
 }
+
 @Composable
 fun ContentPantallaAjustes(
     modifier: Modifier,
@@ -95,7 +96,7 @@ fun ContentPantallaAjustes(
             )
             BotonPrincipal(onClick = {
                 cargaDatosUsuario.actualizarDescripcion(inputDescripcion.value)
-                Toast.makeText(context, "Descripción guardada", Toast.LENGTH_SHORT).show()
+                Toast.makeText(context, "Descripción actualizada", Toast.LENGTH_SHORT).show()
             }, "Guardar Descripcion", Blue100, White)
             BotonPrincipal(
                 onClick = {

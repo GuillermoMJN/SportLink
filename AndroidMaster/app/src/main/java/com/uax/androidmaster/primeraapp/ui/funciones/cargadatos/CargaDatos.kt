@@ -13,16 +13,16 @@ import com.google.firebase.firestore.firestore
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.State
 import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
+import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.guardarDescripcion
 
 class CargaDatos : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    // UID del usuario actual
     var uid: String? = null
+        private set
 
-    // Estados individuales
     private val _nombre = mutableStateOf("")
     val nombre: State<String> = _nombre
 
@@ -48,10 +48,13 @@ class CargaDatos : ViewModel() {
 
     fun cargarDescripcion() {
         uid?.let { userId ->
-            db.collection("usuarios").document(userId)
+            db.collection("perfiles")
+                .whereEqualTo("usuarioId", userId)
                 .get()
-                .addOnSuccessListener { doc ->
-                    _descripcion.value = doc.getString("descripcion") ?: ""
+                .addOnSuccessListener { documents ->
+                    if (!documents.isEmpty) {
+                        _descripcion.value = documents.first().getString("descripcion") ?: ""
+                    }
                 }
         }
     }
@@ -78,13 +81,7 @@ class CargaDatos : ViewModel() {
                             .addOnSuccessListener {
                                 _descripcion.value = nuevaDescripcion
                             }
-                            .addOnFailureListener {
-                                Log.e("Firestore", "Error al actualizar descripción", it)
-                            }
                     }
-                }
-                .addOnFailureListener {
-                    Log.e("Firestore", "Error al buscar perfil", it)
                 }
         }
     }
