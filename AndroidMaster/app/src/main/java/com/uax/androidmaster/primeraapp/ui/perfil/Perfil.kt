@@ -68,16 +68,17 @@ fun PantallaPerfil(
         uri?.let {
             val uid = cargaDatosUsuario.uid
             if (uid != null) {
-                val storageRef =
-                    FirebaseStorage.getInstance().reference.child("imagenesUsuarios/$uid.jpg")
+                // Subir a imagenesUsuarios/UID/perfil/perfil.jpg
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
+
                 storageRef.putFile(uri)
                     .addOnSuccessListener {
-                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, "Imagen de perfil subida correctamente", Toast.LENGTH_SHORT).show()
                     }
                     .addOnFailureListener {
-                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, "Error al subir la imagen de perfil", Toast.LENGTH_SHORT).show()
                     }
             } else {
                 Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
@@ -113,33 +114,10 @@ fun ContentPantallaPerfil(
 ) {
 
     val db = Firebase.firestore
+
+    //Aqui se tiene que subir las fotos:
     val fotos = remember {
         mutableStateListOf(
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.like_blue,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
-            R.drawable.sportlink,
             R.drawable.sportlink
         )
     }
