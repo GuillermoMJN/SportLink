@@ -60,13 +60,13 @@ fun NavigationWrapper(
             val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
             PantallaPerfil(
                 navHostController,
-                cargaDatosUsuario = cargaDatosUsuario,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
                 navigateToPrincipal = { navHostController.navigate("login") },
                 navigateToBuscar = { navHostController.navigate("buscar") },
                 navigateToAjustes = { navHostController.navigate("ajustes") },
-                texto = textoDescripcion
+                texto = textoDescripcion,
+                cargaDatos = cargaDatosUsuario
             )
         }
         composable("mensajes") {

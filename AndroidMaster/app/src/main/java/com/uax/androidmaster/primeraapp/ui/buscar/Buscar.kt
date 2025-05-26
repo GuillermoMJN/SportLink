@@ -16,6 +16,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
+import com.uax.androidmaster.primeraapp.ui.theme.Blue100
+import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
@@ -32,7 +34,7 @@ fun PantallaBuscar(
             navigateToPerfil = navigateToPerfil,
             navigateToMensajes = navigateToMensajes,
             navigateToNotificaciones = navigateToNotificaciones,
-            navigateToPrincipal = navigateToPrincipal,
+            navigateToPrincipal = navigateToPrincipal
         )
     }) { innerPadding ->
         ContentPantallaBuscar(
@@ -54,6 +56,6 @@ fun ContentPantallaBuscar(modifier: Modifier) {
             label = { Text("Buscar") },
             modifier = Modifier.fillMaxWidth()
         )
-        BotonPrincipal(onClick = {}, "Buscar")
+        BotonPrincipal(onClick = {}, "Buscar", White, Blue100)
     }
 }

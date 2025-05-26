@@ -86,8 +86,8 @@ fun ContentInitialScreen(
                             Log.i("ERROR", "NO")
                         }
                     }
-            }, "Ingresar")
-            BotonPrincipal(onClick = { navigateToSignUp() }, "Registrarse")
+            }, "Ingresar", White, Blue100)
+            BotonPrincipal(onClick = { navigateToSignUp() }, "Registrarse", White, Blue100)
         }
         Spacer(modifier = Modifier.weight(1f))
     }

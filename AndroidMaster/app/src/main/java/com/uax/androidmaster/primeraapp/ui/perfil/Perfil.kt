@@ -1,8 +1,6 @@
 package com.uax.androidmaster.primeraapp.ui.perfil
 
-import android.net.Uri
 import android.widget.Toast
-import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
@@ -37,12 +35,17 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.lifecycle.viewmodel.compose.viewModel
+import coil3.compose.AsyncImage
+import coil3.compose.rememberAsyncImagePainter
+import coil3.request.ImageRequest
+import coil3.request.crossfade
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
@@ -50,6 +53,8 @@ import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaImagenes
 import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.cargarDescripcionPerfil
+import com.uax.androidmaster.primeraapp.ui.theme.Blue100
+import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @Composable
 fun PantallaPerfil(
@@ -60,46 +65,23 @@ fun PantallaPerfil(
     navigateToBuscar: () -> Unit,
     navigateToAjustes: () -> Unit,
     texto: MutableState<String>,
-    cargaDatosUsuario: CargaDatos
+    cargaDatos: CargaDatos
+
 ) {
-    val context = LocalContext.current
-
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            val uid = cargaDatosUsuario.uid
-            if (uid != null) {
-                // Subir a imagenesUsuarios/UID/perfil/perfil.jpg
-                val storageRef = FirebaseStorage.getInstance()
-                    .reference
-                    .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
-
-                storageRef.putFile(uri)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Imagen de perfil subida correctamente", Toast.LENGTH_SHORT).show()
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "Error al subir la imagen de perfil", Toast.LENGTH_SHORT).show()
-                    }
-            } else {
-                Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
             navigateToMensajes = navigateToMensajes,
             navigateToNotificaciones = navigateToNotificaciones,
             navigateToPrincipal = navigateToPrincipal,
-            navigateToBuscar = navigateToBuscar,
+            navigateToBuscar = navigateToBuscar
         )
     }) { innerPadding ->
         ContentPantallaPerfil(
             modifier = Modifier.padding(innerPadding),
             navController = navHostController,
             texto = texto,
-            cargaDatosUsuario = cargaDatosUsuario,
-            launcher = launcher
+            cargaDatosUsuario = cargaDatos
         )
     }
 }
@@ -109,11 +91,42 @@ fun ContentPantallaPerfil(
     modifier: Modifier,
     navController: NavHostController,
     texto: MutableState<String>,
-    cargaDatosUsuario: CargaDatos,
-    launcher: ManagedActivityResultLauncher<String, Uri?>
+    cargaDatosUsuario: CargaDatos
 ) {
+    val imagenPerfilUrl = rememberSaveable { mutableStateOf<String?>(null) }
 
     val db = Firebase.firestore
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            val uid = cargaDatosUsuario.uid
+            if (uid != null) {
+                // Crea un nombre de archivo único (por ejemplo, con timestamp)
+                val fileName = "img_${System.currentTimeMillis()}.jpg"
+
+                // Ruta: imagenesUsuarios/UID/publicaciones/img_123456789.jpg
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("imagenesUsuarios/$uid/publicaciones/$fileName")
+
+                storageRef.putFile(uri)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+            } else {
+                Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    val uid = cargaDatosUsuario.uid
+    Toast.makeText(context, "UID: $uid", Toast.LENGTH_SHORT).show()
 
     //Aqui se tiene que subir las fotos:
     val fotos = remember {
@@ -121,6 +134,30 @@ fun ContentPantallaPerfil(
             R.drawable.sportlink
         )
     }
+
+    LaunchedEffect(Unit) {
+        val uid = cargaDatosUsuario.uid
+        if (uid != null) {
+            FirebaseStorage.getInstance()
+                .reference
+                .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
+                .downloadUrl
+                .addOnSuccessListener { uri ->
+                    imagenPerfilUrl.value = uri.toString()
+                    Toast.makeText(context, "URL cargada", Toast.LENGTH_SHORT).show()
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        context,
+                        "No se pudo cargar la imagen de perfil",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+    }
+
+    val painter = rememberAsyncImagePainter(model = imagenPerfilUrl.value)
+
     LaunchedEffect(true) {
         cargarDescripcionPerfil(db) {
             texto.value = it ?: ""
@@ -135,13 +172,21 @@ fun ContentPantallaPerfil(
             modifier = Modifier.padding(10.dp),
             verticalAlignment = Alignment.Top// para que queden alineados
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.sportlink),
+            AsyncImage(
+                model = ImageRequest.Builder(LocalContext.current)
+                    .data(imagenPerfilUrl.value)
+                    .crossfade(true)
+                    .build(),
                 contentDescription = "fotoPerfil",
                 modifier = Modifier
-                    .height(100.dp) // altura fija más controlada
-                    .clip(RoundedCornerShape(8.dp)) // opcional: darle forma
+                    .height(100.dp)
+                    .aspectRatio(1f)
+                    .clip(RoundedCornerShape(8.dp)),
+                contentScale = ContentScale.Crop,
+                placeholder = painterResource(id = R.drawable.sportlink), // imagen mientras carga
+                error = painterResource(id = R.drawable.sportlink)        // si falla la carga
             )
+            //Esta es la imagen de perfil
 
             Spacer(modifier = Modifier.width(8.dp)) // pequeño espacio opcional
             Column(horizontalAlignment = Alignment.Start) {
@@ -162,13 +207,14 @@ fun ContentPantallaPerfil(
                     )
                 }
             }
+            BotonPrincipal(
+                onClick = {
+                    CargaImagenes(launcher)// Lanza la galería
+                },
+                texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
+            )
         }
-        BotonPrincipal(
-            onClick = {
-                CargaImagenes(launcher)// Lanza la galería
-            },
-            texto = ("Subir imagen")
-        )
+
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier

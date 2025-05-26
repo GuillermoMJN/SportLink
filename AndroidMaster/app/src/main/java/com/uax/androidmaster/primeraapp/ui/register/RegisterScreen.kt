@@ -91,6 +91,6 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestor
                         Log.i("No registrado", "NO")
                     }
                 }
-        }, "Registrarse")
+        }, "Registrarse", White, Blue100)
     }
 }

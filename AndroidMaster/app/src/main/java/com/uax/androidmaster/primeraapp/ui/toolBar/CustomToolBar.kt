@@ -13,6 +13,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.theme.Blue60
 import androidx.compose.runtime.getValue
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -22,7 +23,7 @@ fun CustomToolBar(
     navigateToMensajes: () -> Unit = {},
     navigateToNotificaciones: () -> Unit = {},
     navigateToPrincipal: () -> Unit = {},
-    navigateToBuscar: () -> Unit = {},
+    navigateToBuscar: () -> Unit = {}
 ) {
     val navBackStackEntry by navhHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route

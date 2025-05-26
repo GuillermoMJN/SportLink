@@ -25,7 +25,7 @@ fun PantallaNotificaciones(
             navigateToPerfil = navigateToPerfil,
             navigateToMensajes = navigateToMensajes,
             navigateToPrincipal = navigateToPrincipal,
-            navigateToBuscar = navigateToBuscar
+            navigateToBuscar = navigateToBuscar,
         )
     }) { innerPadding ->
         ContentPantallaNotificaciones(
