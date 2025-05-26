@@ -67,11 +67,11 @@ fun PantallaAjsutes(
             modifier = Modifier.padding(innerPadding),
             texto = texto,
             cargaDatosUsuario = cargaDatosUsuario,
-            launcher = launcher
+            launcher = launcher,
+
         )
     }
 }
-
 @Composable
 fun ContentPantallaAjustes(
     modifier: Modifier,
@@ -99,7 +99,8 @@ fun ContentPantallaAjustes(
             }, "Guardar Descripcion", Blue100, White)
             BotonPrincipal(
                 onClick = {
-                    CargaImagenes(launcher)// Lanza la galería
+                    // Lanzar galería para elegir imagen
+                    launcher.launch("image/*")
                 },
                 texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
             )

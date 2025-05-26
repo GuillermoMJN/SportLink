@@ -1,8 +1,10 @@
 package com.uax.androidmaster.primeraapp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -25,7 +27,6 @@ fun NavigationWrapper(
     auth: FirebaseAuth,
     db: FirebaseFirestore
 ) {
-
     val textoDescripcion = remember { mutableStateOf("Descripción inicial") }
     NavHost(navController = navHostController, startDestination = "initial") {
         composable("initial") {

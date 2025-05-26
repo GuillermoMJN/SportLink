@@ -1,5 +1,6 @@
 package com.uax.androidmaster.primeraapp.ui.perfil
 
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -28,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
+import kotlinx.coroutines.tasks.await
 
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -37,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 
 import androidx.compose.ui.Alignment
 
@@ -85,7 +88,6 @@ fun PantallaPerfil(
         )
     }
 }
-
 @Composable
 fun ContentPantallaPerfil(
     modifier: Modifier,
@@ -93,31 +95,53 @@ fun ContentPantallaPerfil(
     texto: MutableState<String>,
     cargaDatosUsuario: CargaDatos
 ) {
-    val imagenPerfilUrl = rememberSaveable { mutableStateOf<String?>(null) }
-
-    val db = Firebase.firestore
     val context = LocalContext.current
+    val uid = cargaDatosUsuario.uid
+
+    val imagenPerfilUrl = rememberSaveable { mutableStateOf<String?>(null) }
+    val fotosUrls = remember { mutableStateListOf<String>() }
+
+    fun cargarFotosPublicaciones(uid: String, fotosList: SnapshotStateList<String>) {
+        val publicacionesRef = FirebaseStorage.getInstance()
+            .reference
+            .child("imagenesUsuarios/$uid/publicaciones")
+
+        publicacionesRef.listAll()
+            .addOnSuccessListener { listResult ->
+                fotosList.clear()
+                listResult.items.forEach { storageRef ->
+                    storageRef.downloadUrl
+                        .addOnSuccessListener { uri ->
+                            Log.d("FOTOS", "Foto URL: $uri")
+                            fotosList.add(uri.toString())
+                        }
+                        .addOnFailureListener { e ->
+                            Log.e("FOTOS", "Error al obtener downloadUrl", e)
+                        }
+                }
+            }
+            .addOnFailureListener { e ->
+                Toast.makeText(context, "Error cargando publicaciones", Toast.LENGTH_SHORT).show()
+                Log.e("FOTOS", "Error listAll publicaciones", e)
+                fotosList.clear()
+            }
+    }
 
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
-            val uid = cargaDatosUsuario.uid
             if (uid != null) {
-                // Crea un nombre de archivo único (por ejemplo, con timestamp)
                 val fileName = "img_${System.currentTimeMillis()}.jpg"
-
-                // Ruta: imagenesUsuarios/UID/publicaciones/img_123456789.jpg
                 val storageRef = FirebaseStorage.getInstance()
                     .reference
                     .child("imagenesUsuarios/$uid/publicaciones/$fileName")
 
                 storageRef.putFile(uri)
                     .addOnSuccessListener {
-                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT).show()
+                        cargarFotosPublicaciones(uid, fotosUrls)
                     }
                     .addOnFailureListener {
-                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT)
-                            .show()
+                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
                     }
             } else {
                 Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
@@ -125,44 +149,26 @@ fun ContentPantallaPerfil(
         }
     }
 
-    val uid = cargaDatosUsuario.uid
-    Toast.makeText(context, "UID: $uid", Toast.LENGTH_SHORT).show()
-
-    //Aqui se tiene que subir las fotos:
-    val fotos = remember {
-        mutableStateListOf(
-            R.drawable.sportlink
-        )
-    }
-
-    LaunchedEffect(Unit) {
-        val uid = cargaDatosUsuario.uid
-        if (uid != null) {
-            FirebaseStorage.getInstance()
+    LaunchedEffect(uid) {
+        if (!uid.isNullOrEmpty()) {
+            val perfilRef = FirebaseStorage.getInstance()
                 .reference
                 .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
-                .downloadUrl
+
+            perfilRef.downloadUrl
                 .addOnSuccessListener { uri ->
+                    Log.d("PERFIL", "URL imagen perfil: $uri")
                     imagenPerfilUrl.value = uri.toString()
-                    Toast.makeText(context, "URL cargada", Toast.LENGTH_SHORT).show()
                 }
-                .addOnFailureListener {
-                    Toast.makeText(
-                        context,
-                        "No se pudo cargar la imagen de perfil",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                .addOnFailureListener { e ->
+                    Log.e("PERFIL", "Error cargando imagen perfil", e)
+                    imagenPerfilUrl.value = null
                 }
+
+            cargarFotosPublicaciones(uid, fotosUrls)
         }
     }
 
-    val painter = rememberAsyncImagePainter(model = imagenPerfilUrl.value)
-
-    LaunchedEffect(true) {
-        cargarDescripcionPerfil(db) {
-            texto.value = it ?: ""
-        }
-    }
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -170,33 +176,28 @@ fun ContentPantallaPerfil(
     ) {
         Row(
             modifier = Modifier.padding(10.dp),
-            verticalAlignment = Alignment.Top// para que queden alineados
+            verticalAlignment = Alignment.Top
         ) {
             AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(imagenPerfilUrl.value)
-                    .crossfade(true)
-                    .build(),
+                model = imagenPerfilUrl.value ?: R.drawable.sportlink,
                 contentDescription = "fotoPerfil",
                 modifier = Modifier
                     .height(100.dp)
                     .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp)),
                 contentScale = ContentScale.Crop,
-                placeholder = painterResource(id = R.drawable.sportlink), // imagen mientras carga
-                error = painterResource(id = R.drawable.sportlink)        // si falla la carga
+                placeholder = painterResource(id = R.drawable.sportlink),
+                error = painterResource(id = R.drawable.sportlink)
             )
-            //Esta es la imagen de perfil
 
-            Spacer(modifier = Modifier.width(8.dp)) // pequeño espacio opcional
+            Spacer(modifier = Modifier.width(8.dp))
+
             Column(horizontalAlignment = Alignment.Start) {
-                //Descripcion
-                Text(
-                    text = texto.value,
-                )
+                Text(text = texto.value)
             }
+
             Column(
-                modifier = Modifier,
+                modifier = Modifier.weight(1f), // para que ocupe el espacio y empuje el icono a la derecha
                 verticalArrangement = Arrangement.Top,
                 horizontalAlignment = Alignment.End
             ) {
@@ -207,34 +208,38 @@ fun ContentPantallaPerfil(
                     )
                 }
             }
+
             BotonPrincipal(
                 onClick = {
-                    CargaImagenes(launcher)// Lanza la galería
+                    launcher.launch("image/*")
                 },
-                texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
+                texto = "Subir imagen",
+                colorFondo = Blue100,
+                colorLetra = White
             )
         }
 
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier
-                .fillMaxSize()
+                .weight(1f)
                 .padding(6.dp),
             contentPadding = PaddingValues(4.dp),
             verticalArrangement = Arrangement.spacedBy(4.dp),
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            items(fotos) { fotoId ->
-                Image(
-                    painter = painterResource(id = fotoId),
+            items(fotosUrls) { url ->
+                AsyncImage(
+                    model = url,
                     contentDescription = "Foto publicada",
                     modifier = Modifier
-                        .aspectRatio(1f) // Para mantener imágenes cuadradas
+                        .aspectRatio(1f)
                         .clip(RoundedCornerShape(8.dp)),
-                    contentScale = ContentScale.Crop
+                    contentScale = ContentScale.Crop,
+                    placeholder = painterResource(id = R.drawable.sportlink),
+                    error = painterResource(id = R.drawable.sportlink)
                 )
             }
         }
-
     }
 }
