@@ -1,5 +1,10 @@
 package com.uax.androidmaster.primeraapp.ui.perfil
 
+import android.net.Uri
+import android.widget.Toast
+import androidx.activity.compose.ManagedActivityResultLauncher
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -32,13 +37,18 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
 
 import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.google.firebase.Firebase
 import com.google.firebase.firestore.firestore
+import com.google.firebase.storage.FirebaseStorage
+import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaImagenes
 import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.cargarDescripcionPerfil
 
 @Composable
@@ -49,8 +59,31 @@ fun PantallaPerfil(
     navigateToPrincipal: () -> Unit,
     navigateToBuscar: () -> Unit,
     navigateToAjustes: () -> Unit,
-    texto: MutableState<String>
+    texto: MutableState<String>,
+    cargaDatosUsuario: CargaDatos
 ) {
+    val context = LocalContext.current
+
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            val uid = cargaDatosUsuario.uid
+            if (uid != null) {
+                val storageRef =
+                    FirebaseStorage.getInstance().reference.child("imagenesUsuarios/$uid.jpg")
+                storageRef.putFile(uri)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT)
+                            .show()
+                    }
+            } else {
+                Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
@@ -63,7 +96,9 @@ fun PantallaPerfil(
         ContentPantallaPerfil(
             modifier = Modifier.padding(innerPadding),
             navController = navHostController,
-            texto = texto
+            texto = texto,
+            cargaDatosUsuario = cargaDatosUsuario,
+            launcher = launcher
         )
     }
 }
@@ -72,8 +107,11 @@ fun PantallaPerfil(
 fun ContentPantallaPerfil(
     modifier: Modifier,
     navController: NavHostController,
-    texto: MutableState<String>
+    texto: MutableState<String>,
+    cargaDatosUsuario: CargaDatos,
+    launcher: ManagedActivityResultLauncher<String, Uri?>
 ) {
+
     val db = Firebase.firestore
     val fotos = remember {
         mutableStateListOf(
@@ -82,7 +120,27 @@ fun ContentPantallaPerfil(
             R.drawable.sportlink,
             R.drawable.sportlink,
             R.drawable.sportlink,
-            R.drawable.like_blue
+            R.drawable.like_blue,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink,
+            R.drawable.sportlink
         )
     }
     LaunchedEffect(true) {
@@ -112,7 +170,7 @@ fun ContentPantallaPerfil(
                 //Descripcion
                 Text(
                     text = texto.value,
-                    )
+                )
             }
             Column(
                 modifier = Modifier,
@@ -127,6 +185,12 @@ fun ContentPantallaPerfil(
                 }
             }
         }
+        BotonPrincipal(
+            onClick = {
+                CargaImagenes(launcher)// Lanza la galería
+            },
+            texto = ("Subir imagen")
+        )
         LazyVerticalGrid(
             columns = GridCells.Fixed(3),
             modifier = Modifier
@@ -147,5 +211,6 @@ fun ContentPantallaPerfil(
                 )
             }
         }
+
     }
 }

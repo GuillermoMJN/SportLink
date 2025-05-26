@@ -20,7 +20,7 @@ class CargaDatos : ViewModel() {
     private val auth = FirebaseAuth.getInstance()
 
     // UID del usuario actual
-    private var uid: String? = null
+    var uid: String? = null
 
     // Estados individuales
     private val _nombre = mutableStateOf("")

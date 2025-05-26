@@ -12,7 +12,7 @@ import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 
 @Composable
-fun BotonPrincipal(onClick: () -> Unit, texto: String) {
+fun BotonPrincipal(onClick: () -> Unit, texto: @Composable String) {
     Button(
         onClick = onClick,
         modifier = Modifier.padding(horizontal = 10.dp),

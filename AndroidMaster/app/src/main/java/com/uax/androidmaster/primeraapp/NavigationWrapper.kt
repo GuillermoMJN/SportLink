@@ -53,8 +53,14 @@ fun NavigationWrapper(
             RegisterScreen(auth, db)
         }
         composable("perfil") {
+                backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry("login")
+            }
+            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
             PantallaPerfil(
                 navHostController,
+                cargaDatosUsuario = cargaDatosUsuario,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
                 navigateToPrincipal = { navHostController.navigate("login") },
