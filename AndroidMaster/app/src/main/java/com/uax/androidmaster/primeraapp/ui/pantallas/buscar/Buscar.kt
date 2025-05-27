@@ -27,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.PerfilPompa
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
@@ -38,7 +39,8 @@ fun PantallaBuscar(
     navigateToPerfil: () -> Unit,
     navigateToNotificaciones: () -> Unit,
     navigateToPrincipal: () -> Unit,
-    navigateToMensajes: () -> Unit
+    navigateToMensajes: () -> Unit,
+    cargaDatosUsuario: CargaDatos
 ) {
     val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     Scaffold(topBar = {
@@ -53,7 +55,8 @@ fun PantallaBuscar(
         ContentPantallaBuscar(
             modifier = Modifier.padding(innerPadding),
             userId = userId,
-            navHostController = navHostController
+            navHostController = navHostController,
+            cargaDatosUsuario = cargaDatosUsuario
         )
     }
 }
@@ -62,6 +65,7 @@ fun PantallaBuscar(
 fun ContentPantallaBuscar(
     userId: String, // Si necesitas el id para algo
     modifier: Modifier = Modifier,
+    cargaDatosUsuario: CargaDatos,
     navHostController: NavHostController
 ) {
     var searchQuery by remember { mutableStateOf("") }
@@ -120,7 +124,7 @@ fun ContentPantallaBuscar(
             verticalArrangement = Arrangement.Top
         ) {
             items(resultados) { nombre ->
-                PerfilPompa(nombreUsuario = nombre){
+                PerfilPompa(nombreUsuario = nombre, cargaDatosUsuario = cargaDatosUsuario ){
                     navHostController.navigate("perfilClicado")
                 }
             }

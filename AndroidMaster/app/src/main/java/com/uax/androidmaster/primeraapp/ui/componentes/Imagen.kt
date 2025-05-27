@@ -23,8 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import coil3.compose.AsyncImage
-import coil3.compose.AsyncImagePainter
+import coil.compose.AsyncImage
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.theme.Transparent
 import com.uax.androidmaster.primeraapp.ui.theme.White
@@ -48,10 +47,6 @@ fun Imagen() {
                 .background(Transparent).padding(horizontal = 10.dp),
             contentAlignment = Alignment.Center
         ) {
-            AsyncImage(
-                model="https://www.bing.com/images/search?q=imagen%20firebase&FORM=IQFRBA&id=0AA715760A142A8D125756F86BC6CFDD3194E35F",
-                contentDescription = "",
-            )
             Image(
                 painter = painterResource(id = R.drawable.sportlink),
                 contentDescription = "",

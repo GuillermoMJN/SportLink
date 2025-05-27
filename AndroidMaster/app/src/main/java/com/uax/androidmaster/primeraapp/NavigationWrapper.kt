@@ -90,12 +90,18 @@ fun NavigationWrapper(
             )
         }
         composable("buscar") {
+                backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry("login")
+            }
+            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
             PantallaBuscar(
                 navHostController,
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
                 navigateToPrincipal = { navHostController.navigate("login") },
-                navigateToMensajes = { navHostController.navigate("mensajes") }
+                navigateToMensajes = { navHostController.navigate("mensajes") },
+                cargaDatosUsuario = cargaDatosUsuario
             )
         }
         composable("ajustes") { backStackEntry ->
