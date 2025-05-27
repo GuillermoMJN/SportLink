@@ -45,6 +45,7 @@ import androidx.compose.ui.Alignment
 
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import coil3.compose.AsyncImage
 import coil3.compose.rememberAsyncImagePainter
 import coil3.request.ImageRequest
@@ -56,6 +57,7 @@ import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaImagenes
 import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.cargarDescripcionPerfil
+import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 
@@ -198,7 +200,8 @@ fun ContentPantallaPerfil(
             Spacer(modifier = Modifier.width(8.dp))
 
             Column(horizontalAlignment = Alignment.Start) {
-                Text(text = texto.value)
+                Text(text = "Nombre de usuario", fontWeight = FontWeight.Bold, color = Black)
+                Text(text = texto.value ?: "Descripcion")
             }
 
             Column(

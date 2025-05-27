@@ -32,6 +32,13 @@ class CargaDatos : ViewModel() {
     private val _fotoUrl = mutableStateOf("")
     val fotoUrl: State<String> = _fotoUrl
 
+    init {
+        cargarUID()
+        cargarNombre()
+        cargarDescripcion()
+        cargarFotoUrl()
+    }
+
     fun cargarUID() {
         uid = auth.currentUser?.uid
     }
@@ -82,6 +89,16 @@ class CargaDatos : ViewModel() {
                                 _descripcion.value = nuevaDescripcion
                             }
                     }
+                }
+        }
+    }
+
+    fun actualizarNombre(nuevoNombre: String) {
+        uid?.let { userId ->
+            db.collection("usuarios").document(userId)
+                .update("nombre", nuevoNombre)
+                .addOnSuccessListener {
+                    _nombre.value = nuevoNombre
                 }
         }
     }

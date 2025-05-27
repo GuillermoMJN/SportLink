@@ -88,6 +88,7 @@ fun ContentPantallaAjustes(
         horizontalAlignment = Alignment.Start
     ) {
         Column {
+            Text("Cambiar descripcion de tu perfil")
             OutlinedTextField(
                 value = inputDescripcion.value,
                 onValueChange = { inputDescripcion.value = it },
@@ -98,12 +99,21 @@ fun ContentPantallaAjustes(
                 cargaDatosUsuario.actualizarDescripcion(inputDescripcion.value)
                 Toast.makeText(context, "Descripción actualizada", Toast.LENGTH_SHORT).show()
             }, "Guardar Descripcion", Blue100, White)
+            Text("Cambiar imagen de perfil")
             BotonPrincipal(
                 onClick = {
                     // Lanzar galería para elegir imagen
                     launcher.launch("image/*")
                 },
                 texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
+            )
+            Text("Cambiar nombre de usuario")
+            BotonPrincipal(
+                onClick = {
+                    // Cambia nombre de perfil
+
+                },
+                texto = ("Cambiar imagen"), colorFondo = Blue100, colorLetra = White
             )
         }
     }
