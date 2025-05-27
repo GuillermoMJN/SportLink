@@ -8,7 +8,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -24,7 +23,7 @@ import androidx.navigation.NavHostController
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
-import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaImagenes
+import com.uax.androidmaster.primeraapp.ui.funciones.eliminarUsuario.eliminarUsuario
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBarAjustes
@@ -68,6 +67,7 @@ fun PantallaAjsutes(
             texto = texto,
             cargaDatosUsuario = cargaDatosUsuario,
             launcher = launcher,
+            navHostController = navHostController
 
         )
     }
@@ -78,7 +78,8 @@ fun ContentPantallaAjustes(
     modifier: Modifier,
     texto: MutableState<String>,
     cargaDatosUsuario: CargaDatos,
-    launcher: ManagedActivityResultLauncher<String, Uri?>
+    launcher: ManagedActivityResultLauncher<String, Uri?>,
+    navHostController: NavHostController
 ) {
     val inputDescripcion = remember { mutableStateOf("") }
     val context = LocalContext.current
@@ -123,6 +124,18 @@ fun ContentPantallaAjustes(
                 },
                 texto = ("Cambiar nombre"), colorFondo = Blue100, colorLetra = White
             )
+            BotonPrincipal(onClick = {
+                eliminarUsuario(
+                    onSuccess = {
+                        Toast.makeText(context, "Usuario eliminado con éxito", Toast.LENGTH_LONG).show()
+                        navHostController.navigate("initial")
+                        // Aquí podrías navegar al login o cerrar sesión
+                    },
+                    onError = { error ->
+                        Toast.makeText(context, error, Toast.LENGTH_LONG).show()
+                    }
+                )
+            }, texto = ("Eliminar Usuario"), colorFondo = Blue100, colorLetra = White)
         }
     }
 }
