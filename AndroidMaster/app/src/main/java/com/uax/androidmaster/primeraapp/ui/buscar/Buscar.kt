@@ -1,24 +1,38 @@
 package com.uax.androidmaster.primeraapp.ui.buscar
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
+import com.uax.androidmaster.primeraapp.ui.componentes.Imagen
+import com.uax.androidmaster.primeraapp.ui.componentes.PerfilPompa
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PantallaBuscar(
@@ -28,6 +42,7 @@ fun PantallaBuscar(
     navigateToPrincipal: () -> Unit,
     navigateToMensajes: () -> Unit
 ) {
+    val userId = FirebaseAuth.getInstance().currentUser?.uid ?: ""
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
@@ -38,16 +53,39 @@ fun PantallaBuscar(
         )
     }) { innerPadding ->
         ContentPantallaBuscar(
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            userId = userId
         )
     }
 }
 
 @Composable
-fun ContentPantallaBuscar(modifier: Modifier) {
+fun ContentPantallaBuscar(
+    userId: String, // Si necesitas el id para algo
+    modifier: Modifier = Modifier
+) {
     var searchQuery by remember { mutableStateOf("") }
+    var perfiles by remember { mutableStateOf<List<String>>(emptyList()) }
+    var resultados by remember { mutableStateOf<List<String>>(emptyList()) }
+    val db = FirebaseFirestore.getInstance()
+
+    LaunchedEffect(Unit) {
+        try {
+            val result = db.collection("usuarios").get().await()
+            val lista = result.documents.mapNotNull { it.getString("nombre") }
+            perfiles = lista
+            resultados = lista
+        } catch (e: Exception) {
+            // Manejar error aquí si quieres
+            perfiles = emptyList()
+            resultados = emptyList()
+        }
+    }
+
     Column(
-        modifier = modifier.fillMaxSize(),
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight(),
         horizontalAlignment = Alignment.Start
     ) {
         TextField(
@@ -56,6 +94,74 @@ fun ContentPantallaBuscar(modifier: Modifier) {
             label = { Text("Buscar") },
             modifier = Modifier.fillMaxWidth()
         )
-        BotonPrincipal(onClick = {}, "Buscar", White, Blue100)
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        BotonPrincipal(
+            onClick = {
+                // Filtrar perfiles que empiezan o contienen la búsqueda (ignorando mayúsculas/minúsculas)
+                resultados = perfiles.filter {
+                    it.startsWith(searchQuery, ignoreCase = true) ||
+                            it.contains(searchQuery, ignoreCase = true)
+                }
+            },
+            texto = "Buscar",
+            colorFondo = Blue100,
+            colorLetra = White
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(1f)
+                .background(White),
+            verticalArrangement = Arrangement.Top
+        ) {
+            items(resultados) { nombre ->
+                PerfilPompa(nombreUsuario = nombre)
+            }
+        }
     }
 }
+
+/*
+@Composable
+fun ContentPantallaBuscar(modifier: Modifier) {
+    var searchQuery by remember { mutableStateOf("") }
+    Column(
+        modifier = modifier.fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
+    ) {
+        TextField(
+            value = searchQuery,
+            onValueChange = { searchQuery = it },
+            label = { Text("Buscar") },
+            modifier = Modifier.fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+
+        BotonPrincipal(
+            onClick = {},
+            "Buscar",
+            White,
+            Blue100
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
+
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(White)
+                .weight(1f),
+            verticalArrangement = Arrangement.Top
+        ) {
+            items(8) {
+                PerfilPompa()
+            }
+        }
+    }
+}
+*/

@@ -36,6 +36,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 
@@ -52,6 +53,8 @@ import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @Composable
 fun PantallaPerfil(
@@ -98,6 +101,7 @@ fun ContentPantallaPerfil(
 
     val imagenPerfilUrl = rememberSaveable { mutableStateOf<String?>(null) }
     val fotosUrls = remember { mutableStateListOf<String>() }
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(cargaDatosUsuario.descripcion.value) {
         textoDescripcion.value = cargaDatosUsuario.descripcion.value
@@ -135,24 +139,47 @@ fun ContentPantallaPerfil(
 
     LaunchedEffect(uid) {
         if (!uid.isNullOrEmpty()) {
-            val perfilRef = FirebaseStorage.getInstance()
-                .reference
-                .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
+            try {
+                val perfilRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
 
-            perfilRef.downloadUrl
-                .addOnSuccessListener { uri ->
-                    Log.d("PERFIL", "URL imagen perfil: $uri")
-                    imagenPerfilUrl.value = uri.toString()
-                }
-                .addOnFailureListener { e ->
-                    Log.e("PERFIL", "Error cargando imagen perfil", e)
-                    imagenPerfilUrl.value = null
-                }
+                val uri = perfilRef.downloadUrl.await()
+                Log.d("PERFIL", "URL imagen perfil: $uri")
+                imagenPerfilUrl.value = uri.toString()
 
-            cargarFotosPublicaciones(uid, fotosUrls)
+                cargarFotosPublicaciones(uid, fotosUrls)
+            } catch (e: Exception) {
+                Log.e("PERFIL", "Error cargando imagen perfil", e)
+                imagenPerfilUrl.value = null
+            }
         }
     }
 
+    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
+        uri?.let {
+            if (uid != null) {
+                val fileName = "img_${System.currentTimeMillis()}.jpg"
+                val storageRef = FirebaseStorage.getInstance()
+                    .reference
+                    .child("imagenesUsuarios/$uid/publicaciones/$fileName")
+
+                coroutineScope.launch {
+                    try {
+                        storageRef.putFile(uri).await()
+                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT).show()
+                        cargarFotosPublicaciones(uid, fotosUrls)
+                    } catch (e: Exception) {
+                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                    }
+                }
+            } else {
+                Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    /*
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             if (uid != null) {
@@ -173,7 +200,7 @@ fun ContentPantallaPerfil(
                 Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
             }
         }
-    }
+    }*/
 
     Column(
         modifier = modifier

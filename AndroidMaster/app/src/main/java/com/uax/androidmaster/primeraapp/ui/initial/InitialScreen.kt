@@ -73,7 +73,7 @@ fun ContentInitialScreen(
         Text("de hacer deporte", color = Blue20, fontSize = 32.sp, fontWeight = FontWeight.Bold)
         Spacer(modifier = Modifier.weight(0.5f))
         IngresarTexto("Usuario", 8, contenido = usuario)
-        IngresarTexto("Contraseña", 8, contenido = pass)
+        IngresarTexto("Contraseña", 8, contenido = pass, tipo = "pass")
         Spacer(modifier = Modifier.weight(0.5f))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             BotonPrincipal(onClick = {
@@ -92,4 +92,3 @@ fun ContentInitialScreen(
         Spacer(modifier = Modifier.weight(1f))
     }
 }
-

@@ -1,20 +1,13 @@
 package com.uax.androidmaster.primeraapp.ui.funciones.cargadatos
 
-import android.util.Log
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+
 import androidx.lifecycle.ViewModel
-import com.google.firebase.Firebase
+
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
-import com.google.firebase.firestore.firestore
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.State
-import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
-import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.guardarDescripcion
 
+import androidx.compose.runtime.State
 class CargaDatos : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()

@@ -25,6 +25,7 @@ import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.funciones.eliminarUsuario.eliminarUsuario
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
+import com.uax.androidmaster.primeraapp.ui.theme.Red
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBarAjustes
 
@@ -135,7 +136,7 @@ fun ContentPantallaAjustes(
                         Toast.makeText(context, error, Toast.LENGTH_LONG).show()
                     }
                 )
-            }, texto = ("Eliminar Usuario"), colorFondo = Blue100, colorLetra = White)
+            }, texto = ("Eliminar Usuario"), colorFondo = Red, colorLetra = White)
         }
     }
 }
