@@ -17,21 +17,21 @@ import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 @Composable
 fun PantallaPrincipal(
     navHostController: NavHostController,
+    cargaDatosUsuario: CargaDatos,
     navigateToPerfil: () -> Unit,
     navigateToMensajes: () -> Unit,
     navigateToNotificaciones: () -> Unit,
     navigateToBuscar: () -> Unit,
-    cargaDatosUsuario: CargaDatos
+    navigateToInicio: () -> Unit
 ) {
-
     Scaffold(topBar = {
         CustomToolBar(
             navHostController,
-            navigateToPerfil,
-            navigateToMensajes,
-            navigateToNotificaciones,
-            navigateToBuscar,
-            navigateToBuscar
+            navigateToPerfil = navigateToPerfil,
+            navigateToMensajes = navigateToMensajes,
+            navigateToNotificaciones = navigateToNotificaciones,
+            navigateToBuscar = navigateToBuscar,
+            navigateToInicio = navigateToInicio
         )
     }) { innerPadding ->
         ContentPantallaPrincipal(

@@ -31,7 +31,7 @@ import com.uax.androidmaster.primeraapp.ui.theme.*
 fun InitialScreen(
     auth: FirebaseAuth,
     navigateToLogin: () -> Unit = {},
-    navigateToSignUp: () -> Unit = {},
+    navigateToSignUp: () -> Unit = {}
 ) {
     Scaffold { innerPadding ->
         ContentInitialScreen(

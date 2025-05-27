@@ -46,7 +46,8 @@ fun NavigationWrapper(
                 navigateToPerfil = { navHostController.navigate("perfil") },
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
-                navigateToBuscar = { navHostController.navigate("buscar") }
+                navigateToBuscar = { navHostController.navigate("buscar") },
+                navigateToInicio = { navHostController.navigate("initial") }
             )
         }
         composable("register") {

@@ -136,7 +136,7 @@ fun ContentPantallaPerfil(
             }
     }
 
-    LaunchedEffect(uid) {
+    LaunchedEffect(true) {
         if (!uid.isNullOrEmpty()) {
             try {
                 val perfilRef = FirebaseStorage.getInstance()

@@ -23,7 +23,8 @@ fun CustomToolBar(
     navigateToMensajes: () -> Unit = {},
     navigateToNotificaciones: () -> Unit = {},
     navigateToPrincipal: () -> Unit = {},
-    navigateToBuscar: () -> Unit = {}
+    navigateToBuscar: () -> Unit = {},
+    navigateToInicio:() -> Unit = {}
 ) {
     val navBackStackEntry by navhHostController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
@@ -33,6 +34,7 @@ fun CustomToolBar(
                 "perfil" -> Text("Perfil")
                 "notificaciones" -> Text("Notificaciones")
                 "mensajes" -> Text("Mensajes")
+                "buscar" -> Text("Buscar")
                 else -> Text("SportLink")
             }
         },
@@ -43,6 +45,8 @@ fun CustomToolBar(
                     "perfil" -> navigateToPrincipal()
                     "notificaciones" -> navigateToPrincipal()
                     "mensajes" -> navigateToPrincipal()
+                    "login" -> navigateToInicio()
+                    "buscar" -> navigateToPrincipal()
                     else -> navhHostController.popBackStack()
                 }
             }) {
