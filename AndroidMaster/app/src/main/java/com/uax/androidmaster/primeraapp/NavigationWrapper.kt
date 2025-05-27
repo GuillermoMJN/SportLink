@@ -108,5 +108,23 @@ fun NavigationWrapper(
                 cargaDatosUsuario = cargaDatosUsuario
             )
         }
+        composable("perfilClicado") {
+                backStackEntry ->
+            val parentEntry = remember(backStackEntry) {
+                navHostController.getBackStackEntry("login")
+            }
+            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
+            PantallaPerfil(
+                navHostController,
+                navigateToMensajes = { navHostController.navigate("mensajes") },
+                navigateToNotificaciones = { navHostController.navigate("notificaciones") },
+                navigateToPrincipal = { navHostController.navigate("login") },
+                navigateToBuscar = { navHostController.navigate("buscar") },
+                navigateToAjustes = { navHostController.navigate("ajustes") },
+                textoDescripcion = textoDescripcion,
+                cargaDatos = cargaDatosUsuario,
+                textoNombre = textoNombre
+            )
+        }
     }
 }

@@ -121,7 +121,7 @@ fun ContentPantallaBuscar(
         ) {
             items(resultados) { nombre ->
                 PerfilPompa(nombreUsuario = nombre){
-                    navHostController.navigate("login")
+                    navHostController.navigate("perfilClicado")
                 }
             }
         }
