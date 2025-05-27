@@ -9,15 +9,15 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.uax.androidmaster.primeraapp.ui.ajustes.PantallaAjsutes
-import com.uax.androidmaster.primeraapp.ui.buscar.PantallaBuscar
+import com.uax.androidmaster.primeraapp.ui.pantallas.ajustes.PantallaAjsutes
+import com.uax.androidmaster.primeraapp.ui.pantallas.buscar.PantallaBuscar
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
-import com.uax.androidmaster.primeraapp.ui.initial.InitialScreen
-import com.uax.androidmaster.primeraapp.ui.principal.PantallaPrincipal
+import com.uax.androidmaster.primeraapp.ui.pantallas.initial.InitialScreen
+import com.uax.androidmaster.primeraapp.ui.pantallas.principal.PantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
-import com.uax.androidmaster.primeraapp.ui.mensajes.PantallaMensajes
-import com.uax.androidmaster.primeraapp.ui.notificaciones.PantallaNotificaciones
-import com.uax.androidmaster.primeraapp.ui.perfil.PantallaPerfil
+import com.uax.androidmaster.primeraapp.ui.pantallas.mensajes.PantallaMensajes
+import com.uax.androidmaster.primeraapp.ui.pantallas.notificaciones.PantallaNotificaciones
+import com.uax.androidmaster.primeraapp.ui.pantallas.perfil.PantallaPerfil
 
 @Composable
 fun NavigationWrapper(

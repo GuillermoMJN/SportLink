@@ -1,4 +1,4 @@
-package com.uax.androidmaster.primeraapp.ui.principal
+package com.uax.androidmaster.primeraapp.ui.pantallas.principal
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.primeraapp.ui.componentes.Imagen

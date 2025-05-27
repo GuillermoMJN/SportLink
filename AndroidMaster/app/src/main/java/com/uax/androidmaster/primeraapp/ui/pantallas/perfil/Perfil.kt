@@ -1,4 +1,4 @@
-package com.uax.androidmaster.primeraapp.ui.perfil
+package com.uax.androidmaster.primeraapp.ui.pantallas.perfil
 
 import android.util.Log
 import android.widget.Toast
@@ -45,7 +45,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal

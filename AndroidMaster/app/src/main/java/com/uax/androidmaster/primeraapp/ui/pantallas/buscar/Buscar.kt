@@ -1,11 +1,10 @@
-package com.uax.androidmaster.primeraapp.ui.buscar
+package com.uax.androidmaster.primeraapp.ui.pantallas.buscar
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -27,7 +26,6 @@ import androidx.navigation.NavHostController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
-import com.uax.androidmaster.primeraapp.ui.componentes.Imagen
 import com.uax.androidmaster.primeraapp.ui.componentes.PerfilPompa
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
@@ -54,7 +52,8 @@ fun PantallaBuscar(
     }) { innerPadding ->
         ContentPantallaBuscar(
             modifier = Modifier.padding(innerPadding),
-            userId = userId
+            userId = userId,
+            navHostController = navHostController
         )
     }
 }
@@ -62,7 +61,8 @@ fun PantallaBuscar(
 @Composable
 fun ContentPantallaBuscar(
     userId: String, // Si necesitas el id para algo
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    navHostController: NavHostController
 ) {
     var searchQuery by remember { mutableStateOf("") }
     var perfiles by remember { mutableStateOf<List<String>>(emptyList()) }
@@ -120,7 +120,9 @@ fun ContentPantallaBuscar(
             verticalArrangement = Arrangement.Top
         ) {
             items(resultados) { nombre ->
-                PerfilPompa(nombreUsuario = nombre)
+                PerfilPompa(nombreUsuario = nombre){
+                    navHostController.navigate("login")
+                }
             }
         }
     }

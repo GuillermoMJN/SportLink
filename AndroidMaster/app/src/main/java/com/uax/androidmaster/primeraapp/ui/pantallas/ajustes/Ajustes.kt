@@ -1,4 +1,4 @@
-package com.uax.androidmaster.primeraapp.ui.ajustes
+package com.uax.androidmaster.primeraapp.ui.pantallas.ajustes
 
 import android.net.Uri
 import android.widget.Toast

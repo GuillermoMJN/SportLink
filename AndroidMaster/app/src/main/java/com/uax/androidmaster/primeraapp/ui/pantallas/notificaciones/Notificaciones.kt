@@ -1,4 +1,4 @@
-package com.uax.androidmaster.primeraapp.ui.notificaciones
+package com.uax.androidmaster.primeraapp.ui.pantallas.notificaciones
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize

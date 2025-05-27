@@ -1,4 +1,4 @@
-package com.uax.androidmaster.primeraapp.ui.initial
+package com.uax.androidmaster.primeraapp.ui.pantallas.initial
 
 import com.google.firebase.auth.FirebaseAuth
 import android.util.Log
