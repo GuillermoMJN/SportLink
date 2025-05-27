@@ -4,7 +4,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -29,7 +28,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.uax.androidmaster.R
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
-import kotlinx.coroutines.tasks.await
 
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -47,16 +45,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import coil3.compose.AsyncImage
-import coil3.compose.rememberAsyncImagePainter
-import coil3.request.ImageRequest
-import coil3.request.crossfade
-import com.google.firebase.Firebase
-import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
-import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaImagenes
-import com.uax.androidmaster.primeraapp.ui.funciones.descripcion.cargarDescripcionPerfil
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
@@ -69,8 +60,9 @@ fun PantallaPerfil(
     navigateToPrincipal: () -> Unit,
     navigateToBuscar: () -> Unit,
     navigateToAjustes: () -> Unit,
-    texto: MutableState<String>,
-    cargaDatos: CargaDatos
+    textoDescripcion: MutableState<String>,
+    cargaDatos: CargaDatos,
+    textoNombre: MutableState<String>
 
 ) {
     Scaffold(topBar = {
@@ -85,7 +77,8 @@ fun PantallaPerfil(
         ContentPantallaPerfil(
             modifier = Modifier.padding(innerPadding),
             navController = navHostController,
-            texto = texto,
+            textoDescripcion = textoDescripcion,
+            textoNombre = textoNombre,
             cargaDatosUsuario = cargaDatos
         )
     }
@@ -95,8 +88,9 @@ fun PantallaPerfil(
 fun ContentPantallaPerfil(
     modifier: Modifier,
     navController: NavHostController,
-    texto: MutableState<String>,
-    cargaDatosUsuario: CargaDatos
+    textoDescripcion: MutableState<String>,
+    cargaDatosUsuario: CargaDatos,
+    textoNombre: MutableState<String>
 ) {
     val context = LocalContext.current
     val uid = cargaDatosUsuario.uid
@@ -105,7 +99,11 @@ fun ContentPantallaPerfil(
     val fotosUrls = remember { mutableStateListOf<String>() }
 
     LaunchedEffect(cargaDatosUsuario.descripcion.value) {
-        texto.value = cargaDatosUsuario.descripcion.value
+        textoDescripcion.value = cargaDatosUsuario.descripcion.value
+    }
+
+    LaunchedEffect(cargaDatosUsuario.nombre.value) {
+        textoNombre.value = cargaDatosUsuario.nombre.value
     }
 
     fun cargarFotosPublicaciones(uid: String, fotosList: SnapshotStateList<String>) {
@@ -200,8 +198,8 @@ fun ContentPantallaPerfil(
             Spacer(modifier = Modifier.width(8.dp))
 
             Column(horizontalAlignment = Alignment.Start) {
-                Text(text = "Nombre de usuario", fontWeight = FontWeight.Bold, color = Black)
-                Text(text = texto.value ?: "Descripcion")
+                Text(text = textoNombre.value, fontWeight = FontWeight.Bold, color = Black)
+                Text(text = textoDescripcion.value)
             }
 
             Column(

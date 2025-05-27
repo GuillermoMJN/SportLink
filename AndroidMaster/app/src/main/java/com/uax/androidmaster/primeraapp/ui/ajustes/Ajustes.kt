@@ -82,6 +82,7 @@ fun ContentPantallaAjustes(
 ) {
     val inputDescripcion = remember { mutableStateOf("") }
     val context = LocalContext.current
+    val inputNombre = remember {mutableStateOf("")}
 
     Column(
         modifier = modifier.fillMaxSize().padding(8.dp),
@@ -108,12 +109,19 @@ fun ContentPantallaAjustes(
                 texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
             )
             Text("Cambiar nombre de usuario")
+            OutlinedTextField(
+                value = inputNombre.value,
+                onValueChange = { inputNombre.value = it },
+                label = { Text("Editar descripción") },
+                modifier = Modifier.padding(16.dp)
+            )
             BotonPrincipal(
                 onClick = {
                     // Cambia nombre de perfil
-
+                    cargaDatosUsuario.actualizarNombre(inputNombre.value)
+                    Toast.makeText(context, "Nombre de usuario actualizado", Toast.LENGTH_SHORT).show()
                 },
-                texto = ("Cambiar imagen"), colorFondo = Blue100, colorLetra = White
+                texto = ("Cambiar nombre"), colorFondo = Blue100, colorLetra = White
             )
         }
     }

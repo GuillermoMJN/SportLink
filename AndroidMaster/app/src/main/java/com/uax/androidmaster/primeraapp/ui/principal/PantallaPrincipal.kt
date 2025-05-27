@@ -24,9 +24,6 @@ fun PantallaPrincipal(
     navigateToBuscar: () -> Unit,
     cargaDatosUsuario: CargaDatos
 ) {
-    LaunchedEffect(Unit) {
-        cargaDatosUsuario.cargarUID()
-    }
 
     Scaffold(topBar = {
         CustomToolBar(
