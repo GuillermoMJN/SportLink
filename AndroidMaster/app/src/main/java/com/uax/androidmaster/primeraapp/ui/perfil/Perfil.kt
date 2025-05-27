@@ -44,6 +44,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import coil3.compose.AsyncImage
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
@@ -132,6 +133,26 @@ fun ContentPantallaPerfil(
             }
     }
 
+    LaunchedEffect(uid) {
+        if (!uid.isNullOrEmpty()) {
+            val perfilRef = FirebaseStorage.getInstance()
+                .reference
+                .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
+
+            perfilRef.downloadUrl
+                .addOnSuccessListener { uri ->
+                    Log.d("PERFIL", "URL imagen perfil: $uri")
+                    imagenPerfilUrl.value = uri.toString()
+                }
+                .addOnFailureListener { e ->
+                    Log.e("PERFIL", "Error cargando imagen perfil", e)
+                    imagenPerfilUrl.value = null
+                }
+
+            cargarFotosPublicaciones(uid, fotosUrls)
+        }
+    }
+
     val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
         uri?.let {
             if (uid != null) {
@@ -151,26 +172,6 @@ fun ContentPantallaPerfil(
             } else {
                 Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
             }
-        }
-    }
-
-    LaunchedEffect(uid) {
-        if (!uid.isNullOrEmpty()) {
-            val perfilRef = FirebaseStorage.getInstance()
-                .reference
-                .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
-
-            perfilRef.downloadUrl
-                .addOnSuccessListener { uri ->
-                    Log.d("PERFIL", "URL imagen perfil: $uri")
-                    imagenPerfilUrl.value = uri.toString()
-                }
-                .addOnFailureListener { e ->
-                    Log.e("PERFIL", "Error cargando imagen perfil", e)
-                    imagenPerfilUrl.value = null
-                }
-
-            cargarFotosPublicaciones(uid, fotosUrls)
         }
     }
 
@@ -213,16 +214,15 @@ fun ContentPantallaPerfil(
                         contentDescription = "Ir al perfil",
                     )
                 }
+                BotonPrincipal(
+                    onClick = {
+                        launcher.launch("image/*")
+                    },
+                    texto = "Subir imagen",
+                    colorFondo = Blue100,
+                    colorLetra = White
+                )
             }
-
-            BotonPrincipal(
-                onClick = {
-                    launcher.launch("image/*")
-                },
-                texto = "Subir imagen",
-                colorFondo = Blue100,
-                colorLetra = White
-            )
         }
 
         LazyVerticalGrid(
