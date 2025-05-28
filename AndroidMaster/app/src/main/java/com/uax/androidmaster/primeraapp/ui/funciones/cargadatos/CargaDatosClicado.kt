@@ -8,6 +8,7 @@ import androidx.compose.runtime.mutableStateOf
 import com.google.firebase.auth.FirebaseAuth
 
 import androidx.compose.runtime.State
+import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
 
 class CargaDatosClicado(val uid: String) {
 
@@ -27,19 +28,19 @@ class CargaDatosClicado(val uid: String) {
     }
 
     private fun cargarDatos() {
-        db.collection("usuarios").document(uid)
+        db.collection(ConstantesFirestore.BBDD_USUARIOS).document(uid)
             .get()
             .addOnSuccessListener { doc ->
-                _nombre.value = doc.getString("nombre") ?: ""
-                _fotoUrl.value = doc.getString("fotoUrl") ?: ""
+                _nombre.value = doc.getString(ConstantesFirestore.BBDD_NOMBRE) ?: "Sin nombre"
+                _fotoUrl.value = doc.getString(ConstantesFirestore.BBDD_USUARIOID) ?: ""
             }
 
-        db.collection("perfiles")
-            .whereEqualTo("usuarioId", uid)
+        db.collection(ConstantesFirestore.BBDD_PERFILES)
+            .whereEqualTo(ConstantesFirestore.BBDD_USUARIOID, uid)
             .get()
             .addOnSuccessListener { documents ->
                 if (!documents.isEmpty) {
-                    _descripcion.value = documents.first().getString("descripcion") ?: ""
+                    _descripcion.value = documents.first().getString(ConstantesFirestore.BBDD_DESCRIPCION) ?: "Deportista"
                 }
             }
     }
