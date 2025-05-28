@@ -28,6 +28,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.componentes.PerfilPompa
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
+import com.uax.androidmaster.primeraapp.ui.model.UsuarioClicado
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
@@ -63,24 +64,27 @@ fun PantallaBuscar(
 
 @Composable
 fun ContentPantallaBuscar(
-    userId: String, // Si necesitas el id para algo
+    userId: String,
     modifier: Modifier = Modifier,
     cargaDatosUsuario: CargaDatos,
     navHostController: NavHostController
 ) {
     var searchQuery by remember { mutableStateOf("") }
-    var perfiles by remember { mutableStateOf<List<String>>(emptyList()) }
-    var resultados by remember { mutableStateOf<List<String>>(emptyList()) }
+    var perfiles by remember { mutableStateOf<List<UsuarioClicado>>(emptyList()) }
+    var resultados by remember { mutableStateOf<List<UsuarioClicado>>(emptyList()) }
     val db = FirebaseFirestore.getInstance()
 
     LaunchedEffect(Unit) {
         try {
             val result = db.collection("usuarios").get().await()
-            val lista = result.documents.mapNotNull { it.getString("nombre") }
+            val lista = result.documents.mapNotNull {
+                val nombre = it.getString("nombre")
+                val uid = it.id
+                if (nombre != null) UsuarioClicado(uid, nombre) else null
+            }
             perfiles = lista
             resultados = lista
         } catch (e: Exception) {
-            // Manejar error aquí si quieres
             perfiles = emptyList()
             resultados = emptyList()
         }
@@ -103,10 +107,9 @@ fun ContentPantallaBuscar(
 
         BotonPrincipal(
             onClick = {
-                // Filtrar perfiles que empiezan o contienen la búsqueda (ignorando mayúsculas/minúsculas)
                 resultados = perfiles.filter {
-                    it.startsWith(searchQuery, ignoreCase = true) ||
-                            it.contains(searchQuery, ignoreCase = true)
+                    it.nombre.startsWith(searchQuery, ignoreCase = true) ||
+                            it.nombre.contains(searchQuery, ignoreCase = true)
                 }
             },
             texto = "Buscar",
@@ -123,51 +126,11 @@ fun ContentPantallaBuscar(
                 .background(White),
             verticalArrangement = Arrangement.Top
         ) {
-            items(resultados) { nombre ->
-                PerfilPompa(nombreUsuario = nombre, cargaDatosUsuario = cargaDatosUsuario ){
-                    navHostController.navigate("perfilClicado")
+            items(resultados) { usuario ->
+                PerfilPompa(nombreUsuario = usuario.nombre, cargaDatosUsuario = cargaDatosUsuario) {
+                    navHostController.navigate("perfilClicado/${usuario.uid}")
                 }
             }
         }
     }
 }
-
-/*
-@Composable
-fun ContentPantallaBuscar(modifier: Modifier) {
-    var searchQuery by remember { mutableStateOf("") }
-    Column(
-        modifier = modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-    ) {
-        TextField(
-            value = searchQuery,
-            onValueChange = { searchQuery = it },
-            label = { Text("Buscar") },
-            modifier = Modifier.fillMaxWidth()
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        BotonPrincipal(
-            onClick = {},
-            "Buscar",
-            White,
-            Blue100
-        )
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(White)
-                .weight(1f),
-            verticalArrangement = Arrangement.Top
-        ) {
-            items(8) {
-                PerfilPompa()
-            }
-        }
-    }
-}
-*/

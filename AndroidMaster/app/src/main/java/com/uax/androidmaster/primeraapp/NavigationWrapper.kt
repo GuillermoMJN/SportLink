@@ -1,23 +1,28 @@
 package com.uax.androidmaster.primeraapp
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.uax.androidmaster.primeraapp.ui.pantallas.ajustes.PantallaAjsutes
 import com.uax.androidmaster.primeraapp.ui.pantallas.buscar.PantallaBuscar
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatosClicado
 import com.uax.androidmaster.primeraapp.ui.pantallas.initial.InitialScreen
 import com.uax.androidmaster.primeraapp.ui.pantallas.principal.PantallaPrincipal
 import com.uax.androidmaster.primeraapp.ui.initial.RegisterScreen
 import com.uax.androidmaster.primeraapp.ui.pantallas.mensajes.PantallaMensajes
 import com.uax.androidmaster.primeraapp.ui.pantallas.notificaciones.PantallaNotificaciones
 import com.uax.androidmaster.primeraapp.ui.pantallas.perfil.PantallaPerfil
+import com.uax.androidmaster.primeraapp.ui.pantallas.perfilClicado.PantallaPerfilClicado
 
 @Composable
 fun NavigationWrapper(
@@ -115,22 +120,24 @@ fun NavigationWrapper(
                 cargaDatosUsuario = cargaDatosUsuario
             )
         }
-        composable("perfilClicado") {
-                backStackEntry ->
-            val parentEntry = remember(backStackEntry) {
-                navHostController.getBackStackEntry("login")
-            }
-            val cargaDatosUsuario: CargaDatos = viewModel(parentEntry)
-            PantallaPerfil(
-                navHostController,
+        composable(
+            route = "perfilClicado/{uid}",
+            arguments = listOf(navArgument("uid") { type = NavType.StringType })
+        ) { backStackEntry ->
+            val uid = backStackEntry.arguments?.getString("uid") ?: ""
+
+            // Instanciamos el ViewModel pasando el uid manualmente
+            val viewModel = remember(uid) { CargaDatosClicado(uid) }
+
+            PantallaPerfilClicado(
+                navHostController = navHostController,
                 navigateToMensajes = { navHostController.navigate("mensajes") },
                 navigateToNotificaciones = { navHostController.navigate("notificaciones") },
                 navigateToPrincipal = { navHostController.navigate("login") },
                 navigateToBuscar = { navHostController.navigate("buscar") },
-                navigateToAjustes = { navHostController.navigate("ajustes") },
-                textoDescripcion = textoDescripcion,
-                cargaDatos = cargaDatosUsuario,
-                textoNombre = textoNombre
+                textoDescripcion = viewModel.descripcion as MutableState<String>,
+                cargaDatos = viewModel,
+                textoNombre = viewModel.nombre as MutableState<String>
             )
         }
     }

@@ -36,7 +36,7 @@ fun IngresarTexto(
         onValueChange = { state.value = it },
         label = { Text(texto.toString(), color = Black) },
         colors = TextFieldDefaults.colors(
-            White,
+            Black,
             focusedLabelColor = Blue100,
             focusedIndicatorColor = Transparent,
             unfocusedIndicatorColor = Transparent

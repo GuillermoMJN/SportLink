@@ -179,29 +179,6 @@ fun ContentPantallaPerfil(
         }
     }
 
-    /*
-    val launcher = rememberLauncherForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-        uri?.let {
-            if (uid != null) {
-                val fileName = "img_${System.currentTimeMillis()}.jpg"
-                val storageRef = FirebaseStorage.getInstance()
-                    .reference
-                    .child("imagenesUsuarios/$uid/publicaciones/$fileName")
-
-                storageRef.putFile(uri)
-                    .addOnSuccessListener {
-                        Toast.makeText(context, "Imagen subida correctamente", Toast.LENGTH_SHORT).show()
-                        cargarFotosPublicaciones(uid, fotosUrls)
-                    }
-                    .addOnFailureListener {
-                        Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
-                    }
-            } else {
-                Toast.makeText(context, "UID no disponible", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }*/
-
     Column(
         modifier = modifier
             .fillMaxSize()

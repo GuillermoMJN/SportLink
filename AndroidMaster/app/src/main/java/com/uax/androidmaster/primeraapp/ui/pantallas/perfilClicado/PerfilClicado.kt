@@ -46,9 +46,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import coil.compose.AsyncImage
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
+import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatosClicado
 import com.uax.androidmaster.primeraapp.ui.theme.Black
 import com.uax.androidmaster.primeraapp.ui.theme.Blue100
 import com.uax.androidmaster.primeraapp.ui.theme.White
@@ -56,17 +58,15 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PantallaPerfil(
+fun PantallaPerfilClicado(
     navHostController: NavHostController,
     navigateToMensajes: () -> Unit,
     navigateToNotificaciones: () -> Unit,
     navigateToPrincipal: () -> Unit,
     navigateToBuscar: () -> Unit,
-    navigateToAjustes: () -> Unit,
     textoDescripcion: MutableState<String>,
-    cargaDatos: CargaDatos,
+    cargaDatos: CargaDatosClicado,
     textoNombre: MutableState<String>
-
 ) {
     Scaffold(topBar = {
         CustomToolBar(
@@ -77,7 +77,7 @@ fun PantallaPerfil(
             navigateToBuscar = navigateToBuscar
         )
     }) { innerPadding ->
-        ContentPantallaPerfil(
+        ContentPantallaPerfilClicado(
             modifier = Modifier.padding(innerPadding),
             navController = navHostController,
             textoDescripcion = textoDescripcion,
@@ -88,11 +88,11 @@ fun PantallaPerfil(
 }
 
 @Composable
-fun ContentPantallaPerfil(
+fun ContentPantallaPerfilClicado(
     modifier: Modifier,
     navController: NavHostController,
     textoDescripcion: MutableState<String>,
-    cargaDatosUsuario: CargaDatos,
+    cargaDatosUsuario: CargaDatosClicado,
     textoNombre: MutableState<String>
 ) {
     val context = LocalContext.current
@@ -134,6 +134,31 @@ fun ContentPantallaPerfil(
                 Log.e("FOTOS", "Error listAll publicaciones", e)
                 fotosList.clear()
             }
+    }
+
+    LaunchedEffect(uid) {
+        // Cargar nombre y descripción
+        try {
+            val doc = FirebaseFirestore.getInstance().collection("usuarios").document(uid).get().await()
+            textoNombre.value = doc.getString("nombre") ?: ""
+            textoDescripcion.value = doc.getString("descripcion") ?: ""
+        } catch (e: Exception) {
+            Log.e("Perfil", "Error al cargar datos", e)
+        }
+
+        // Cargar imagen de perfil y fotos
+        try {
+            val perfilRef = FirebaseStorage.getInstance()
+                .reference
+                .child("imagenesUsuarios/$uid/perfil/perfil.jpg")
+
+            val uri = perfilRef.downloadUrl.await()
+            imagenPerfilUrl.value = uri.toString()
+            cargarFotosPublicaciones(uid, fotosUrls)
+        } catch (e: Exception) {
+            Log.e("PERFIL", "Error cargando imagen perfil", e)
+            imagenPerfilUrl.value = null
+        }
     }
 
     LaunchedEffect(uid) {
@@ -204,27 +229,6 @@ fun ContentPantallaPerfil(
             Column(horizontalAlignment = Alignment.Start) {
                 Text(text = textoNombre.value, fontWeight = FontWeight.Bold, color = Black)
                 Text(text = textoDescripcion.value)
-            }
-
-            Column(
-                modifier = Modifier.weight(1f), // para que ocupe el espacio y empuje el icono a la derecha
-                verticalArrangement = Arrangement.Top,
-                horizontalAlignment = Alignment.End
-            ) {
-                IconButton(onClick = { navController.navigate("ajustes") }) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ajustes),
-                        contentDescription = "Ir al perfil",
-                    )
-                }
-                BotonPrincipal(
-                    onClick = {
-                        launcher.launch("image/*")
-                    },
-                    texto = "Subir imagen",
-                    colorFondo = Blue100,
-                    colorLetra = White
-                )
             }
         }
 
