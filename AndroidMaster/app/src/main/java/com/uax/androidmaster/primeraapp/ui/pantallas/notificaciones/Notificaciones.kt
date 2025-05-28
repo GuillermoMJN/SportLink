@@ -1,5 +1,6 @@
 package com.uax.androidmaster.primeraapp.ui.pantallas.notificaciones
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -9,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import com.uax.androidmaster.primeraapp.ui.componentes.TextoLlamativo
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 
 @Composable
@@ -38,6 +40,7 @@ fun PantallaNotificaciones(
 fun ContentPantallaNotificaciones(modifier: Modifier) {
     Column(
         modifier = modifier.fillMaxSize(),
-        horizontalAlignment = Alignment.Start
-    ) { Text("Notificaciones") }
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) { TextoLlamativo() }
 }

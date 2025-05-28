@@ -10,5 +10,7 @@ val Blue20 = Color(0xFFeff4f9)
 val White = Color(0xFFFFFFFF)
 val Black = Color(0xFF000000)
 val Red = Color(0xD3CC0E0E)
+val BlueTitle = Color(0xFF3F51B5)
+val Grey = Color(0xFF4F4F4F)
 
 val Transparent = Color(0x00000000)

@@ -36,8 +36,7 @@ fun Imagen() {
         modifier = Modifier
             .background(
                 White
-            )
-            ,
+            ),
         horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Top
     ) {
         Box(
