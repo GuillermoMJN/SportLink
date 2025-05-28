@@ -2,6 +2,7 @@ package com.uax.androidmaster.primeraapp.ui.funciones.eliminarUsuario
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
 
 fun eliminarUsuario(
     onSuccess: () -> Unit,
@@ -16,8 +17,8 @@ fun eliminarUsuario(
         // 1. Eliminar documentos en Firestore
         val batch = db.batch()
 
-        val perfilRef = db.collection("perfiles").document(userId)
-        val usuarioRef = db.collection("usuarios").document(userId)
+        val perfilRef = db.collection(ConstantesFirestore.BBDD_PERFILES).document(userId)
+        val usuarioRef = db.collection(ConstantesFirestore.BBDD_USUARIOS).document(userId)
 
         batch.delete(perfilRef)
         batch.delete(usuarioRef)

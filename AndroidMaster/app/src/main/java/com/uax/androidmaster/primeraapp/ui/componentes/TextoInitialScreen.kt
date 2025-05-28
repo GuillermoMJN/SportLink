@@ -1,13 +1,10 @@
 package com.uax.androidmaster.primeraapp.ui.componentes
 
-import androidx.compose.material3.R
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.Font
-import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.uax.androidmaster.primeraapp.ui.constantes.FuenteSport

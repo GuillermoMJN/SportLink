@@ -40,6 +40,9 @@ import com.uax.androidmaster.primeraapp.ui.componentes.IngresarTexto
 import com.uax.androidmaster.primeraapp.ui.componentes.TextoInitialScreen
 import com.uax.androidmaster.primeraapp.ui.theme.*
 
+import android.widget.Toast
+import androidx.compose.ui.platform.LocalContext
+
 @Composable
 fun InitialScreen(
     auth: FirebaseAuth,
@@ -65,6 +68,9 @@ fun ContentInitialScreen(
 ) {
     val usuario = remember { mutableStateOf<String?>(null) }
     val pass = remember { mutableStateOf<String?>(null) }
+
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -106,15 +112,23 @@ fun ContentInitialScreen(
         Spacer(modifier = Modifier.weight(0.5f))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             BotonPrincipal(onClick = {
-                auth.signInWithEmailAndPassword(usuario.value ?: "", pass.value ?: "")
-                    .addOnCompleteListener {
-                        if (it.isSuccessful) {
-                            navigateToLogin()
-                            Log.i("Entro", "SI")
-                        } else {
-                            Log.i("ERROR", "NO")
+                val usuarioInput = usuario.value
+                val passInput = pass.value
+
+                if (usuarioInput.isNullOrBlank() || passInput.isNullOrBlank()) {
+                    Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+                } else {
+                    auth.signInWithEmailAndPassword(usuarioInput, passInput)
+                        .addOnCompleteListener {
+                            if (it.isSuccessful) {
+                                navigateToLogin()
+                                Log.i("Entro", "SI")
+                            } else {
+                                Log.i("ERROR", "NO")
+                                Toast.makeText(context, "Error al iniciar sesión", Toast.LENGTH_SHORT).show()
+                            }
                         }
-                    }
+                }
             }, "Ingresar", White, Blue100)
             BotonPrincipal(onClick = { navigateToSignUp() }, "Registrarse", White, Blue100)
         }

@@ -1,6 +1,7 @@
 package com.uax.androidmaster.primeraapp.ui.initial
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
@@ -46,6 +48,8 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestor
     val fecha = remember { mutableStateOf<String?>(null) }
     val correo = remember { mutableStateOf<String?>(null) }
 
+    val context = LocalContext.current
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -70,27 +74,43 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestor
         Spacer(modifier = Modifier.weight(1f))
 
         BotonPrincipal(onClick = {
-            auth.createUserWithEmailAndPassword(correo.value ?: "", pass.value ?: "")
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.i("Registrado", "SI")
-                        crearUsuario(
-                            db = db,
-                            nombre = usuario,
-                            apellido = apellido,
-                            nacimiento = fecha,
-                            pass = pass,
-                            correo = correo
-                        )
-                        crearPerfil(
-                            db = db,
-                            "Esta es una prueba",
-                            ""
-                        )
-                    } else {
-                        Log.i("No registrado", "NO")
+            val nombreInput = usuario.value
+            val apellidoInput = apellido.value
+            val fechaInput = fecha.value
+            val passInput = pass.value
+            val correoInput = correo.value
+
+            if (nombreInput.isNullOrBlank() ||
+                apellidoInput.isNullOrBlank() ||
+                fechaInput.isNullOrBlank() ||
+                passInput.isNullOrBlank() ||
+                correoInput.isNullOrBlank()
+            ) {
+                Toast.makeText(context, "Por favor, rellene todos los campos", Toast.LENGTH_SHORT).show()
+            } else {
+                auth.createUserWithEmailAndPassword(correoInput, passInput)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.i("Registrado", "SI")
+                            crearUsuario(
+                                db = db,
+                                nombre = usuario,
+                                apellido = apellido,
+                                nacimiento = fecha,
+                                pass = pass,
+                                correo = correo
+                            )
+                            crearPerfil(
+                                db = db,
+                                "Esta es una prueba",
+                                ""
+                            )
+                        } else {
+                            Log.i("No registrado", "NO")
+                            Toast.makeText(context, "Error al registrarse", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                }
+            }
         }, "Registrarse", White, Blue100)
     }
 }

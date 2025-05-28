@@ -8,6 +8,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 import androidx.compose.runtime.State
+import com.uax.androidmaster.primeraapp.ui.constantes.ConstantesFirestore
+
 class CargaDatos : ViewModel() {
 
     private val db = FirebaseFirestore.getInstance()
@@ -38,18 +40,18 @@ class CargaDatos : ViewModel() {
 
     fun cargarNombre() {
         uid?.let { userId ->
-            db.collection("usuarios").document(userId)
+            db.collection(ConstantesFirestore.BBDD_USUARIOS).document(userId)
                 .get()
                 .addOnSuccessListener { doc ->
-                    _nombre.value = doc.getString("nombre") ?: ""
+                    _nombre.value = doc.getString(ConstantesFirestore.BBDD_NOMBRE) ?: ""
                 }
         }
     }
 
     fun cargarDescripcion() {
         uid?.let { userId ->
-            db.collection("perfiles")
-                .whereEqualTo("usuarioId", userId)
+            db.collection(ConstantesFirestore.BBDD_PERFILES)
+                .whereEqualTo(ConstantesFirestore.BBDD_USUARIOID, userId)
                 .get()
                 .addOnSuccessListener { documents ->
                     if (!documents.isEmpty) {
@@ -61,7 +63,7 @@ class CargaDatos : ViewModel() {
 
     fun cargarFotoUrl() {
         uid?.let { userId ->
-            db.collection("usuarios").document(userId)
+            db.collection(ConstantesFirestore.BBDD_USUARIOS).document(userId)
                 .get()
                 .addOnSuccessListener { doc ->
                     _fotoUrl.value = doc.getString("fotoUrl") ?: ""
@@ -71,13 +73,13 @@ class CargaDatos : ViewModel() {
 
     fun actualizarDescripcion(nuevaDescripcion: String) {
         uid?.let { userId ->
-            db.collection("perfiles")
-                .whereEqualTo("usuarioId", userId)
+            db.collection(ConstantesFirestore.BBDD_PERFILES)
+                .whereEqualTo(ConstantesFirestore.BBDD_USUARIOID, userId)
                 .get()
                 .addOnSuccessListener { documents ->
                     for (document in documents) {
-                        db.collection("perfiles").document(document.id)
-                            .update("descripcion", nuevaDescripcion)
+                        db.collection(ConstantesFirestore.BBDD_PERFILES).document(document.id)
+                            .update(ConstantesFirestore.BBDD_DESCRIPCION, nuevaDescripcion)
                             .addOnSuccessListener {
                                 _descripcion.value = nuevaDescripcion
                             }
