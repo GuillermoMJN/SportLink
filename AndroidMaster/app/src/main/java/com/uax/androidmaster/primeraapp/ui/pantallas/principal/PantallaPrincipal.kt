@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.paddingFromBaseline
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Scaffold
@@ -26,12 +27,17 @@ import coil.compose.AsyncImage
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.R
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import com.uax.androidmaster.primeraapp.ui.componentes.Imagen
 import com.uax.androidmaster.primeraapp.ui.funciones.cargadatos.CargaDatos
 import com.uax.androidmaster.primeraapp.ui.theme.White
 import com.uax.androidmaster.primeraapp.ui.toolBar.CustomToolBar
 import kotlinx.coroutines.tasks.await
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.runtime.mutableStateOf
 
 @Composable
 fun PantallaPrincipal(
@@ -67,6 +73,7 @@ fun ContentPantallaPrincipal(
 ) {
     val context = LocalContext.current
     val imagenesUrls = remember { mutableStateListOf<String>() }
+    var liked by remember { mutableStateOf(false) }
 
     // Cargar imágenes al iniciar
     LaunchedEffect(Unit) {
@@ -104,11 +111,20 @@ fun ContentPantallaPrincipal(
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(1f)
-                    .padding(8.dp)
+                    .padding(6.dp)
                     .clip(RoundedCornerShape(12.dp)),
                 placeholder = painterResource(id = R.drawable.sportlink),
                 error = painterResource(id = R.drawable.sportlink)
             )
+            IconButton(
+                modifier = Modifier.padding(10.dp),
+                onClick = { liked = !liked }
+            ) {
+                Icon(
+                    painter = if (liked) painterResource(R.drawable.like_white) else painterResource(R.drawable.like_blue),
+                    contentDescription = "Boton de like"
+                )
+            }
         }
     }
 }
