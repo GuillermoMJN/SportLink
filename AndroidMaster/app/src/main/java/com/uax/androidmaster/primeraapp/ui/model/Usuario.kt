@@ -8,6 +8,4 @@ data class Usuario (
     val nacimiento: Date,
     val contrasena: String,
     val correo: String
-){
-
-}
+)

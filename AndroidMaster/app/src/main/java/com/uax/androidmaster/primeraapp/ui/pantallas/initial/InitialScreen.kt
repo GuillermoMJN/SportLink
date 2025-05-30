@@ -129,8 +129,8 @@ fun ContentInitialScreen(
                             }
                         }
                 }
-            }, "Ingresar", White, Blue100)
-            BotonPrincipal(onClick = { navigateToSignUp() }, "Registrarse", White, Blue100)
+            }, "Ingresar", White, Blue100, padding = 8)
+            BotonPrincipal(onClick = { navigateToSignUp() }, "Registrarse", White, Blue100, padding = 8)
         }
         Spacer(modifier = Modifier.weight(1f))
     }

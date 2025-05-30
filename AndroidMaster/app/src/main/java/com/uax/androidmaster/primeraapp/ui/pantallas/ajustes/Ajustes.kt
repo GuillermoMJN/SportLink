@@ -6,7 +6,9 @@ import androidx.activity.compose.ManagedActivityResultLauncher
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -19,6 +21,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.google.firebase.storage.FirebaseStorage
 import com.uax.androidmaster.primeraapp.ui.componentes.BotonPrincipal
@@ -87,35 +90,28 @@ fun ContentPantallaAjustes(
     val inputNombre = remember {mutableStateOf("")}
 
     Column(
-        modifier = modifier.fillMaxSize().padding(8.dp),
+        modifier = modifier.fillMaxSize().padding(16.dp),
         horizontalAlignment = Alignment.Start
     ) {
         Column {
-            Text("Cambiar descripcion de tu perfil")
+            Text("Cambiar descripcion de tu perfil", fontSize = 20.sp)
             OutlinedTextField(
                 value = inputDescripcion.value,
                 onValueChange = { inputDescripcion.value = it },
-                label = { Text("Editar descripción") },
-                modifier = Modifier.padding(16.dp)
+                label = { Text("Editar descripción") }
             )
+
             BotonPrincipal(onClick = {
                 cargaDatosUsuario.actualizarDescripcion(inputDescripcion.value)
                 Toast.makeText(context, "Descripción actualizada", Toast.LENGTH_SHORT).show()
             }, "Guardar Descripcion", Blue100, White)
-            Text("Cambiar imagen de perfil")
-            BotonPrincipal(
-                onClick = {
-                    // Lanzar galería para elegir imagen
-                    launcher.launch("image/*")
-                },
-                texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
-            )
-            Text("Cambiar nombre de usuario")
+
+            Spacer(modifier = Modifier.height(10.dp))
+            Text("Cambiar nombre de usuario", fontSize = 20.sp)
             OutlinedTextField(
                 value = inputNombre.value,
                 onValueChange = { inputNombre.value = it },
-                label = { Text("Editar descripción") },
-                modifier = Modifier.padding(16.dp)
+                label = { Text("Editar nombre") }
             )
             BotonPrincipal(
                 onClick = {
@@ -125,6 +121,16 @@ fun ContentPantallaAjustes(
                 },
                 texto = ("Cambiar nombre"), colorFondo = Blue100, colorLetra = White
             )
+            Spacer(modifier = Modifier.height(10.dp))
+            Text("Cambiar imagen de perfil", fontSize = 20.sp)
+            BotonPrincipal(
+                onClick = {
+                    // Lanzar galería para elegir imagen
+                    launcher.launch("image/*")
+                },
+                texto = ("Subir imagen"), colorFondo = Blue100, colorLetra = White
+            )
+            Spacer(modifier = Modifier.height(10.dp))
             BotonPrincipal(onClick = {
                 eliminarUsuario(
                     onSuccess = {

@@ -103,12 +103,9 @@ fun ContentPantallaPerfil(
     val fotosUrls = remember { mutableStateListOf<String>() }
     val coroutineScope = rememberCoroutineScope()
 
-    LaunchedEffect(cargaDatosUsuario.descripcion.value) {
-        textoDescripcion.value = cargaDatosUsuario.descripcion.value
-    }
-
-    LaunchedEffect(cargaDatosUsuario.nombre.value) {
+    LaunchedEffect(cargaDatosUsuario.nombre.value, cargaDatosUsuario.descripcion.value) {
         textoNombre.value = cargaDatosUsuario.nombre.value
+        textoDescripcion.value = cargaDatosUsuario.descripcion.value
     }
 
     fun cargarFotosPublicaciones(uid: String, fotosList: SnapshotStateList<String>) {
