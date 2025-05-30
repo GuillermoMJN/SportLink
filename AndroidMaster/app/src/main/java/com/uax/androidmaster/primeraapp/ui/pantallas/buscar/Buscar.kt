@@ -127,7 +127,7 @@ fun ContentPantallaBuscar(
             verticalArrangement = Arrangement.Top
         ) {
             items(resultados) { usuario ->
-                PerfilPompa(nombreUsuario = usuario.nombre, cargaDatosUsuario = cargaDatosUsuario) {
+                PerfilPompa(nombreUsuario = usuario.nombre) {
                     navHostController.navigate("perfilClicado/${usuario.uid}")
                 }
             }

@@ -7,4 +7,5 @@ object ConstantesFirestore {
     const val BBDD_USUARIOID = "usuarioId"
     const val BBDD_NOMBRE = "nombre"
     const val BBDD_FOTO = "foto"
+    const val BBDD_FOTOPERFIL = "fotoPerfil"
 }

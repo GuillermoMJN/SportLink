@@ -77,23 +77,30 @@ fun ContentPantallaPrincipal(
 
     // Cargar imágenes al iniciar
     LaunchedEffect(Unit) {
-        val uid = viewModel.uid
-        if (!uid.isNullOrEmpty()) {
-            val storageRef = FirebaseStorage.getInstance()
-                .reference
-                .child("imagenesUsuarios/$uid/publicaciones")
+        val storageRef = FirebaseStorage.getInstance().reference.child("imagenesUsuarios")
 
-            try {
-                val result = storageRef.listAll().await()
-                imagenesUrls.clear()
+        try {
+            val usuarios = storageRef.listAll().await()
 
-                val urls = result.items.shuffled().take(10).map { it.downloadUrl.await().toString() }
-                imagenesUrls.addAll(urls)
+            val todasLasUrls = mutableListOf<String>()
 
-            } catch (e: Exception) {
-                Toast.makeText(context, "Error cargando imágenes", Toast.LENGTH_SHORT).show()
-                Log.e("IMAGENES", "Error: ${e.localizedMessage}", e)
+            for (usuarioFolder in usuarios.prefixes) {
+                val publicacionesRef = usuarioFolder.child("publicaciones")
+                try {
+                    val imagenes = publicacionesRef.listAll().await()
+                    val urls = imagenes.items.map { it.downloadUrl.await().toString() }
+                    todasLasUrls.addAll(urls)
+                } catch (e: Exception) {
+                    Log.w("CargaImagenes", "Error al cargar publicaciones de ${usuarioFolder.name}: ${e.message}")
+                }
             }
+
+            imagenesUrls.clear()
+            imagenesUrls.addAll(todasLasUrls.shuffled().take(10)) // aleatorio y máximo 10
+
+        } catch (e: Exception) {
+            Toast.makeText(context, "Error cargando imágenes", Toast.LENGTH_SHORT).show()
+            Log.e("IMAGENES", "Error: ${e.localizedMessage}", e)
         }
     }
 

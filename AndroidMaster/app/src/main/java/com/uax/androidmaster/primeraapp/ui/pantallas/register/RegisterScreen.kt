@@ -105,9 +105,14 @@ fun RegisterContent(modifier: Modifier, auth: FirebaseAuth, db: FirebaseFirestor
                                 "Esta es una prueba",
                                 ""
                             )
+                            Toast.makeText(context, "Usuario registrado", Toast.LENGTH_SHORT).show()
+                            usuario.value = ""
+                            apellido.value = ""
+                            fecha.value = ""
+                            pass.value = ""
+                            correo.value = ""
                         } else {
                             Log.i("No registrado", "NO")
-                            Toast.makeText(context, "Error al registrarse", Toast.LENGTH_SHORT).show()
                         }
                     }
             }
